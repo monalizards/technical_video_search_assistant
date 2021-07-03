@@ -14,7 +14,7 @@ class YoutubeCaption:
         sections = []
         caption = self.caption.split('\n')
         # Divide caption into sections (each sections is 4 lines each: 1. section number, 2. timestamps, 3. text, 4. newline)
-        for index in range(len(caption) // 4):
+        for index in range(len(caption) // 4 + 1):
             base = index * 4
             # create new item in subtitle
             sections.append({
@@ -49,7 +49,6 @@ class YoutubeCaption:
         seconds = int(hh) * 60 * 60 + int(mm) * 60 + int(ss) + int(ms) / 1000
         return seconds
         
-
 # WatsonCaption class
 class WatsonCaption:
     def __init__(self, result):
@@ -57,27 +56,46 @@ class WatsonCaption:
         self.sectionlist = self.format_sections()
         self.text = self.compile_sections()
         
-    # print and preview caption
+#     print and preview caption
     def __str__(self):
         return f'<WatsonCaption text="{self.text[:100]}... ">'
 
     # convert to srt-like format
     @staticmethod
     def format_section(section):
-        subtitle = section['transcript']
-        start_time = section['timestamps'][0][1]
-        end_time = section['timestamps'][-1][2]
+        subtitle = ' '.join([timestamp[0] for timestamp in section])
+        start_time = section[0][1]
+        end_time = section[-1][2]
         return {'time': f"{start_time}:{end_time}", 'subtitle': subtitle}
     
-    # format sections from result in format {'section', 'time', 'subtitle'}    
     def format_sections(self):
-        sections = []
-        for index, section in enumerate(self.result["results"]):
+        # compile result into a list of word and timestamps
+        timestamps = []
+        for result in self.result["results"]:
+            timestamps.extend(result['alternatives'][0]['timestamps'])
+        # put words in 10 second sections
+        t, end = 0, timestamps[-1][1]
+        sections, section = [], []
+
+        while t < end:
+            t += 10
+            timestamps = timestamps[len(section):]
+            section = []
+            for timestamp in timestamps:
+                if timestamp[1] < t:
+                    section.append(timestamp)
+                else:
+                    break
+            sections.append(section)
+        
+        formatted_sections = []
+        for index, section in enumerate(sections):
             s = {'section': index + 1}
-            s = {**s, **self.format_section(section['alternatives'][0])}
-            sections.append(s)
-        return sections
-    
+            s = {**s, **self.format_section(section)}
+            formatted_sections.append(s)
+        
+        return formatted_sections
+
     def compile_sections(self):
         text = " ".join([section["subtitle"] for section in self.sectionlist])
         return text
@@ -87,5 +105,21 @@ class WatsonCaption:
     
     def full_text(self):
         return self.text
-
-   
+    
+    
+    # format sections from result in format {'section', 'time', 'subtitle'}
+    # (old) method 1. use pre-divided sections
+    # def format_section(section):
+    #     subtitle = section['transcript']
+    #     start_time = section['timestamps'][0][1]
+    #     end_time = section['timestamps'][-1][2]
+    #     
+    # def format_sections(self):
+    #     print(section[0][1])
+    #     sections = []
+    #     for index, section in enumerate(self.result["results"]):
+    #         s = {'section': index + 1}
+    #         s = {**s, **self.format_section(section['alternatives'][0])}
+    #         sections.append(s)
+    #     return sections
+    # (current) method 2. divide result in 10 second sections:
