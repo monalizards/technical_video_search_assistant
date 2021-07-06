@@ -1,0 +1,11 @@
+transformers[torch]
+ibm-cloud-sdk-core
+ibm-watson
+moviepy
+nltk
+pytube
+spacy
+pyspellchecker
+Flask
+flask-cors
+fastapi
