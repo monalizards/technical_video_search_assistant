@@ -14,6 +14,8 @@ import pickle
 
 # helper functions
 # clean query term
+
+
 def process_search_term(query):
     # remove leading and trailing space and punctuation
     # query = query.strip()
@@ -24,23 +26,31 @@ def process_search_term(query):
 
 # search section
 # process sections
+
+
 def process_sections(sections):
     sections = json.loads(sections)
     # create cumulative index column for each section
     sections[0]['cid'] = len(sections[0]['subtitle'])
     # cid: space offset + previous section's cid + number of characters in the previous section's subtitle
     for index, section in enumerate(sections[1:]):
-        section['cid'] = 1 + sections[index]['cid'] + len(sections[index]['subtitle'])
+        section['cid'] = 1 + sections[index]['cid'] + \
+            len(sections[index]['subtitle'])
     return sections
 
 # loop through sections to find where the term starts
+
+
 def find_section(startid, sections):
+    sections = process_sections(sections)
     for section in sections:
-        if startid < section['cid']:
-            return int(section['section'] )
+        if startid < int(section['cid']):
+            return int(section['section'])
     return -1
 
 # adding specialised word to spellchecker
+
+
 def process_text(text):
     # Word tokenize
     tokens = word_tokenize(text)
@@ -51,6 +61,7 @@ def process_text(text):
     sw = stopwords.words("English")
     content = [w for w in tokens if w.lower() not in sw]
     return content
+
 
 def spellchecker_load(text):
     # load spell checked
@@ -63,6 +74,8 @@ def spellchecker_load(text):
     return spell
 
 # get set of synonyms
+
+
 def get_synonyms(word):
     synonyms = set()
     for syn in wordnet.synsets(word):
@@ -71,6 +84,8 @@ def get_synonyms(word):
     return synonyms
 
 # filter unique matches
+
+
 def filter_matches(matches):
     unique = set()
     filtered = []
@@ -81,6 +96,8 @@ def filter_matches(matches):
     return filtered
 
 # return word matches in text
+
+
 def word_matching(word, text):
     matches = []
     # tokenize text
@@ -106,25 +123,31 @@ def word_matching(word, text):
             matches.append({'match': token, 'type': 'synonym'})
         # match high similarity words
         elif similarity > 0.8:
-            matches.append({'match': token, 'type': 'similarity', 'score': similarity})
+            matches.append(
+                {'match': token, 'type': 'similarity', 'score': similarity})
     return filter_matches(matches)
 
 # return (unique) word matches in text and check for mispelled query
+
+
 def match_word(word, text):
     matches = word_matching(word, text)
     results = {'matches': []}
     # check for misspelled query word if no results are found
     if matches == []:
-    # load spell checker
+        # load spell checker
         spell = spellchecker_load(text)
         correction = spell.correction(word)
         if correction != word:
-            results = {'correction': correction,'matches': word_matching(correction, text)}
+            results = {'correction': correction,
+                       'matches': word_matching(correction, text)}
     else:
         results = {'matches': matches}
     return results
 
 # return (unique) phases marches in text
+
+
 def match_phase(wordtokens, text):
     phase = r'.{0,3}'.join(wordtokens)
     matches = re.findall(phase, text)
@@ -133,10 +156,12 @@ def match_phase(wordtokens, text):
     results = {'matches': matches}
     return results
 
+
 def format_match(match, text, sections):
     match_type = match.get('type', 'exact')
     matches = re.finditer(match['match'], text)
-    matches = [{'start': m.start(), 'end': m.end(), 'match': m.group(0), 'type': match_type} for m in matches]
+    matches = [{'start': m.start(), 'end': m.end(), 'match': m.group(
+        0), 'type': match_type} for m in matches]
     for match in matches:
         match["section"] = find_section(match["start"], sections)
     return matches
@@ -146,7 +171,7 @@ def format_match(match, text, sections):
 def search_caption(query, text, sections):
     # # Process caption and search term
     # text = caption['caption_fulltext']
-    # sections = process_sections(caption)
+
     query_tokens = process_search_term(query)
     res = {}
 
@@ -165,7 +190,8 @@ def search_caption(query, text, sections):
     for match in matches["matches"]:
         results.extend(format_match(match, text, sections))
 
-    res = {'status': 200, 'correction': matches.get('correction', None), 'results': results}
+    res = {'status': 200, 'correction': matches.get(
+        'correction', None), 'results': results}
     return res
 
 
@@ -179,10 +205,10 @@ if __name__ == "__main__":
 
     # Process caption and search term
     text = caption['caption_fulltext']
-    sections = process_sections(caption['caption_sections'])
+    sections = caption['caption_sections']
 
     for query in ['typescript', 'typescpt', 'typescript-based', 'make', 'student', 'student id']:
-        print(f"Search result for '{query}':", search_caption(query, text, sections))
+        print(f"Search result for '{query}':",
+              search_caption(query, text, sections))
     # for query in ['typescript', 'typescpt', 'hooks', 'react', 'react-firebase', 'java script']:
     #     print(f"Search result for '{query}':", search_caption(query, text, sections))
-    

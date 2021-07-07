@@ -1,24 +1,64 @@
-from typing import Optional
+"""
+FastAPI server that return caption, search and Q&A results
+To run: uvicorn main:app --reload
+"""
 
-from fastapi import FastAPI, Request
-from urllib.parse import urlparse, urlencode
+
+from fastapi import FastAPI
+from pydantic import BaseModel, HttpUrl
 
 from services.caption import pipeline
 from services.search import search_caption
 from services.bertQA import qa
 
+
 app = FastAPI()
+
+# Set up request models
+
+
+class Url(BaseModel):
+    url: HttpUrl
+
+
+class Search(BaseModel):
+    query: str
+    text: str
+    sections: str
+
+
+class QA(BaseModel):
+    question: str
+    text: str
+
+
+# Test if app is working
 
 
 @app.get("/")
-def read_root():
+async def read_root() -> dict:
     return {"Hello": "World"}
 
-
-@app.get("/caption/")
-def get_caption(url: Request):
-    # url = f'{url}{urllib.parse.urlencode({'v': v})}'
-    return {'url': url}
+# get caption from url using post
 
 
-# uvicorn main:app --reload
+@app.post("/caption/")
+async def get_caption(url: Url) -> dict:
+    url = url.url
+    return {"url": url, "results": pipeline(url)}
+
+# request a text query result
+
+
+@app.post("/caption/search/")
+async def caption_search(search: Search) -> dict:
+    results = search_caption(search.query, search.text, search.sections)
+    return {"results": results}
+
+# request a question and answer query result
+
+
+@app.post("/caption/qa/")
+async def caption_qa(qa_query: QA) -> dict:
+    results = qa(qa_query.question, qa_query.text)
+    return {"results": results}
