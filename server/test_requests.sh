@@ -1,4 +1,5 @@
 # caption
+echo "\n---Test 1: fetch caption----"
 curl -X 'POST' \
   'http://localhost:8000/caption/' \
   -H 'accept: application/json' \
@@ -8,8 +9,8 @@ curl -X 'POST' \
 }'
 
 # search
-
 curl -X 'POST' \
+echo "\n---Test 2: search----"
   'http://localhost:8000/caption/search/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -21,6 +22,7 @@ curl -X 'POST' \
 }'
 
 # qa
+echo "\n---Test 3: QA----"
 curl -X 'POST' \
   'http://localhost:8000/caption/qa/' \
   -H 'accept: application/json' \
