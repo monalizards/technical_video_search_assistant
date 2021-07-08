@@ -9,7 +9,7 @@ def pipeline(url):
     try:
         yt = YouTube(url)
     except:
-        # TODO: try to find audio/video in website
+        # TODO: stretch goals: deal with playlist/ video or audio from other sources
         return {'status': 400, 'message': 'Unable to load Youtube object'}
 
     # Generate caption

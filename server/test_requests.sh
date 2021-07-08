@@ -9,8 +9,8 @@ curl -X 'POST' \
 }'
 
 # search
-curl -X 'POST' \
 echo "\n---Test 2: search----"
+curl -X 'POST' \
   'http://localhost:8000/caption/search/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
