@@ -10,10 +10,14 @@ RUN python -m nltk.downloader -q all
 RUN python -m spacy download en_core_web_lg
 
 COPY . .
+RUN python bert_model_setup.py
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 
-# docker build -t technicalvideosearchassistant.azurecr.io/fastapi-server:latest .
-# docker run -d -p 8080:8000 technicalvideoserachassistant.azurecr.io/fastapi-server
-# docker login technicalvideoserachassistant.azurecr.io
 # docker push
+# # import from docker hub to azure container registry
+# az acr import \\n--name technicalvideosearchassistant \\n--source docker.io/scchung10/technical-video-search-assistant \\n--image technicalvideosearchassistant:latest
+# # tag from local image and push
+# docker tag docker.io/scchung10/technical-video-search-assistant:latest technicalvideosearchassistant.azurecr.io/technicalvideosearchassistant
+# docker login technicalvideosearchassistant.azurecr.io
+# docker push technicalvideosearchassistant.azurecr.io/technicalvideosearchassistant
