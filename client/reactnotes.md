@@ -59,18 +59,6 @@ const App = () => {
 />
 ```
 
-```jsx
-
-```
-
-```jsx
-
-```
-
-```jsx
-
-```
-
 ## JSX vs HTMl
 
 - Adding custom styling to an element uses different syntax
@@ -93,27 +81,190 @@ const App = () => {
   - Component Configuration
     - We should be able to configure a component when it is created
 
-##
+## Creating a reusable configurable component
 
-##
+1. Identify the JSX that appears to be duplicated
+1. What is the purpose of that block of JSX? Think of a descriptive name for what it does
+1. Create a new file to house this new component - it should have the same name as the component
+1. Create a new component in the new file, paste the JSX into it
+1. Make the new component configurable by using React's 'props' system
 
-##
+## Component hierarchy
 
-##
+- Parent & child components
+- https://reactjs.org/docs/thinking-in-react.html
 
-##
+## Props
 
-##
+- System for passing data from a parent component to a child component
+- Goal is to customise or configure a child component
+- https://reactjs.org/docs/composition-vs-inheritance.html
+- containment: `props.children`
+- specialisation: `<Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />`
+- Default props:
+  ```jsx
+  export default function Loader({ msg }) {
+    return (
+      <div className="ui active dimmer">
+        <div className="ui big text loader">{msg}</div>
+      </div>
+    );
+  }
+  ```
 
-##
+Loader.defaultProps = {
+msg: "Loading...",
+};
 
-##
+````
 
-##
+## React history
 
-###
+- How React Used to Be
 
-####
+- Functinoal Components
+  - Can produce JSX to show content to the user
+- Class Components
+  - Can produce JSX to show content to the user
+  - Can use the Lifecycle Method system to run code at specific points in time
+  - Can use the 'state' system to update content on the screen
+
+- How React is Now
+- Class Components:
+  - Can produce JSX to show content to the user
+  - Can use the Lifecycle Method system to run code at specific points in time
+  - Can use the 'state' system to update content on the screen
+- Function Components (Hooks System)
+  - Can produce JSX to show content to the user
+  - Can use hooks to run code at specific points in time
+  - Can use hooks to access state system and update content on the screen
+
+## Class Components
+
+- Must be a JavaScript Class
+- Must extend (subclass) React.Component
+- Must define a render method that returns some JSX
+
+```jsx
+class App extends React.Component {
+constructor(props) {
+  super(props);
+  this.state = { lat: null };
+  window.navigator.geolocation.getCurrentPosition(
+    (position) => this.setState({ lat: position.coords.latitude }),
+    (err) => console.log(err)
+  );
+}
+
+render() {
+  return <div>Latitude: {this.state.lat}</div>;
+}
+}
+````
+
+## State
+
+- Only usable with class components (technically can be used with functional components using the hooks system)
+- You will confuse props with state
+- State is a JS object that contains data relevant to a component
+- Updating state on a component causes the component to (almost) instantly rerender
+- State must be initalised when a component is created
+- State can only be updated using the function setState
+
+## Lifecycle methods
+
+### Component Lifecycle
+
+1. constructor
+   -> Good place to do one time setup
+1. render
+   -> Avoid doing anything besides returning JSX
+   -> content visible on screen
+1. ComponentDidMount
+   -> Good place to do data loading
+   -> sit and wait for updates
+1. ComponentDidUpdate
+   -> Good place to do more data loading when state/props change
+   -> sit and wait until this component is not longer shown
+1. ComponentWillUnmount
+   -> Good place to do cleanup (esp for non React stuff)
+1. Other lifecycle methods (rarely used):
+   1. ShouldComponentUpdate
+   1. getDeprivedStateFromProps
+   1. getSnapshotBeforeUpdate
+
+```jsx
+class App extends React.Component {
+  state = { lat: null, errMsg: "" };
+
+  componentDidMount() {
+    window.navigator.geolocation.getCurrentPosition(
+      (position) => this.setState({ lat: position.coords.latitude }),
+      (err) => this.setState({ errMsg: err.message })
+    );
+  }
+
+  render() {
+    let content = <div>Loading!</div>;
+    if (this.state.errMsg && !this.state.lat) {
+      content = <div>Error: {this.state.errMsg}</div>;
+    }
+
+    if (!this.state.errMsg && this.state.lat) {
+      content = <div>Latitude: {this.state.lat}</div>;
+    }
+
+    return content;
+  }
+}
+```
+
+## Controlled component
+
+- Flow:
+  - user types in input
+  - callback gets invoked
+  - we call setstate with the new value
+  - component rerenders
+  - input is told what its value is (coming from state)
+
+```jsx
+import React, { useState } from "react";
+
+export default function SearchBar() {
+  // const query =
+
+  // const onInputChange = (e) => {
+  //   console.log(e.target.value);
+  // };
+  const [term, setTerm] = useState("");
+  return (
+    <div className="ui segment">
+      <form className="ui form">
+        <div className="field">
+          <label>Image Search</label>
+          <input
+            type="text"
+            value={term}
+            onChange={(e) => {
+              setTerm(e.target.value);
+            }}
+          />
+        </div>
+      </form>
+    </div>
+  );
+}
+```
+
+## Axios
+
+- https://github.com/axios/axios
+
+## React Refs
+
+- Give access to a single DOM element
+- We create refs in the constructor, assign them to instance variables, then pass to a paritcular JSX element as props
 
 #####
 
