@@ -5,6 +5,7 @@ To run: uvicorn main:app --reload
 
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
 
 from services.caption import pipeline
@@ -13,6 +14,13 @@ from services.bertQA import qa
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Set up request models
 
@@ -35,14 +43,14 @@ class QA(BaseModel):
 # Test if app is working
 
 
-@app.get("/")
+@app.get("/caption")
 async def read_root() -> dict:
     return {"Hello": "World"}
 
 # get caption from url using post
 
 
-@app.post("/caption/")
+@app.post("/caption")
 async def get_caption(url: Url) -> dict:
     url = url.url
     return {"url": url, "results": pipeline(url)}
@@ -50,7 +58,7 @@ async def get_caption(url: Url) -> dict:
 # request a text query result
 
 
-@app.post("/caption/search/")
+@app.post("/caption/search")
 async def caption_search(search: Search) -> dict:
     results = search_caption(search.query, search.text, search.sections)
     return {"results": results}
@@ -58,7 +66,7 @@ async def caption_search(search: Search) -> dict:
 # request a question and answer query result
 
 
-@app.post("/caption/qa/")
+@app.post("/caption/qa")
 async def caption_qa(qa_query: QA) -> dict:
     results = qa(qa_query.question, qa_query.text)
     return {"results": results}
