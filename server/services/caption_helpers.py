@@ -1,8 +1,10 @@
+import os
 from pytube import YouTube, Caption
 from services.caption_classes import YoutubeCaption, WatsonCaption
 
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
+
 
 def yt_find_id(yt):
     """
@@ -21,16 +23,22 @@ def find_en_caption(yt):
     return None
 
 # Download and extract audio
+
+
 def download_audio(yt):
     if 'AudioFileClip' not in dir():
         from moviepy.editor import AudioFileClip
     videoId = yt_find_id(yt)
-    path = yt.streams.first().download(output_path=f"download/{videoId}", filename=f"{videoId}")
+    path = yt.streams.first().download(
+        output_path=f"download/{videoId}", filename=f"{videoId}")
 
     audioclip = AudioFileClip(path)
     audio_filename = f"download/{videoId}/{videoId}.mp3"
     audioclip.write_audiofile(audio_filename)
+    # remove video file
+    os.remove(path)
     return audio_filename
+
 
 def setup_watson():
     if 'speech_to_text' in dir():
@@ -48,6 +56,7 @@ def setup_watson():
         speech_to_text.set_service_url(url)
     return speech_to_text
 
+
 def stt(file, sttmodel):
     with open(file, 'rb') as audio_file:
         result = sttmodel.recognize(
@@ -58,8 +67,13 @@ def stt(file, sttmodel):
         ).get_result()
     return result
 
+
 def generate_watson_caption(yt):
     speech_to_text = setup_watson()
     audio_filename = download_audio(yt)
     speech_recognition_result = stt(audio_filename, speech_to_text)
+    # remove folder from download
+    videoId = yt_find_id(yt)
+    os.remove(audio_filename)
+    os.rmdir(f"download/{videoId}")
     return speech_recognition_result

@@ -71,14 +71,15 @@ class WatsonCaption:
     def format_sections(self):
         # compile result into a list of word and timestamps
         timestamps = []
+        interval = 4
         for result in self.result["results"]:
             timestamps.extend(result['alternatives'][0]['timestamps'])
-        # put words in 10 second sections
+        # put words in fixed time intervals
         t, end = 0, timestamps[-1][1]
         sections, section = [], []
 
         while t < end:
-            t += 10
+            t += interval
             timestamps = timestamps[len(section):]
             section = []
             for timestamp in timestamps:
@@ -122,4 +123,4 @@ class WatsonCaption:
     #         s = {**s, **self.format_section(section['alternatives'][0])}
     #         sections.append(s)
     #     return sections
-    # (current) method 2. divide result in 10 second sections:
+    # (current) method 2. divide result in fixed intervals:
