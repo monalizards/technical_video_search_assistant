@@ -1,0 +1,27 @@
+/* https://github.com/bvaughn/react-virtualized/blob/master/source/styles.css */
+/* https://material-ui.com/components/tables/#api */
+
+.ReactVirtualized__Table__headerRow {
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding: 6px 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
+}
+.ReactVirtualized__Table__row {
+  padding: 6px 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: "pointer";
+}
+.ReactVirtualized__Table__row:hover {
+  cursor: pointer;
+  background-color: #616161;
+}
+.ReactVirtualized__Table__rowColumn {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

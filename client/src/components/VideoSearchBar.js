@@ -1,6 +1,7 @@
 import { useState } from "react";
 import server from "../apis/server";
-import { TextField } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const VideoSearchBar = ({ onReceive }) => {
   //   initiate URL state
@@ -24,9 +25,9 @@ const VideoSearchBar = ({ onReceive }) => {
   };
 
   return (
-    <div>
+    <Box display="flex" justifyContent="space-between" alignItems="center">
       {/* Ask user for URL */}
-      <form onSubmit={onURLSubmit}>
+      <form onSubmit={onURLSubmit} style={{ display: "inline", width: "100%" }}>
         <TextField
           variant="filled"
           fullWidth
@@ -35,9 +36,17 @@ const VideoSearchBar = ({ onReceive }) => {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           disabled={loading}
+          className="input-no-padding"
         />
       </form>
-    </div>
+
+      <ClipLoader
+        loading={loading}
+        color="#0d47a1"
+        size="2em"
+        style={{ marginLeft: "1em" }}
+      />
+    </Box>
   );
 };
 
