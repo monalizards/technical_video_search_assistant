@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const [videoResult, setVideoResult] = useState({});
 
-  const onReceive = (data) => {
-    setVideoResult(data.results);
+  const onReceive = (results) => {
+    setVideoResult(results);
   };
 
   const classes = useStyles();

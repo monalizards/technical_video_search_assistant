@@ -8,19 +8,32 @@ const VideoSearchBar = ({ onReceive }) => {
   const [url, setUrl] = useState("");
   //   Load spinner
   const [loading, setLoading] = useState(false);
+  // show error
+  const [error, setError] = useState("");
   //   fetch video and caption from server
   const onURLSubmit = (e) => {
+    setError("");
     setLoading(true);
     e.preventDefault();
     if (url) {
-      const fetchVideo = async () => {
-        const response = await server.post("", {
+      server
+        .post("", {
           url,
+        })
+        .then((res) => {
+          const { results } = res.data;
+          if (results.status === 200) {
+            onReceive(results);
+          } else if (results.status === 400) {
+            setError(results.message);
+            onReceive({});
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
         });
-        onReceive(response.data);
-        setLoading(false);
-      };
-      fetchVideo();
     }
   };
 
@@ -29,6 +42,8 @@ const VideoSearchBar = ({ onReceive }) => {
       {/* Ask user for URL */}
       <form onSubmit={onURLSubmit} style={{ display: "inline", width: "100%" }}>
         <TextField
+          error={error !== ""}
+          helperText={error}
           variant="filled"
           fullWidth
           size="small"
