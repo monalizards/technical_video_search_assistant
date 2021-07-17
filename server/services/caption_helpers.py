@@ -18,7 +18,7 @@ def find_en_caption(yt):
     returns English caption for a given Pytube's Youtube object
     """
     for c in yt.caption_tracks:
-        if 'en' in c.code:
+        if c.code[:2] == "en" or c.code == "a.en":
             return c
     return None
 

@@ -47,9 +47,10 @@ const TranscriptTable = forwardRef(({ seekToPlay, captionSections }, ref) => {
 
   // find section from playedSeconds
   const findSection = (playedSeconds) => {
-    const id =
-      sections.filter((section) => playedSeconds >= section.startTime).length -
-      1;
+    const id = sections.reduce(
+      (acc, section) => (playedSeconds >= section.startTime ? acc + 1 : acc),
+      -1
+    );
     return id < 0 ? 0 : id;
   };
 
