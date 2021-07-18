@@ -3,14 +3,15 @@ FROM python:3
 WORKDIR /app
 
 COPY ./requirements.txt .
+COPY ./bert_model_setup.py .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN python -m nltk.downloader -q all
 RUN python -m spacy download en_core_web_lg
+RUN python bert_model_setup.py
 
 COPY . .
-RUN python bert_model_setup.py
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 
