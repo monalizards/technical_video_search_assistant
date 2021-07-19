@@ -67,7 +67,7 @@ const TranscriptTable = forwardRef(({ playerRef }, ref) => {
 
   const renderTable = () => {
     return (
-      <Paper style={{ width: "100%", height: 300 }}>
+      <Paper style={{ width: "100%", height: 400 }}>
         <AutoSizer>
           {({ height, width }) => {
             return (

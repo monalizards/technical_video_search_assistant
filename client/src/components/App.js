@@ -34,6 +34,7 @@ const theme = createTheme({
       textAlign: "center",
       fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
       fontWeight: "700",
+      marginBottom: "1rem",
     },
     h4: {
       fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),

@@ -7,22 +7,7 @@ import { Typography } from "@material-ui/core";
 
 import TranscriptTable from "./TranscriptTable";
 import VideoPlayer from "./VideoPlayer";
-// import InVideoSearch from "./InVideoSearch";
-
-// const params = (video, searchType, queryContent) => {
-//   if (searchType === "search") {
-//     return {
-//       query: queryContent,
-//       text: video.caption_fulltext,
-//       sections: video.caption_sections,
-//     };
-//   } else {
-//     return {
-//       question: queryContent,
-//       text: video.caption_fulltext,
-//     };
-//   }
-// };
+import InVideoSearch from "./InVideoSearch";
 
 const VideoShow = () => {
   const { video } = useVideo();
@@ -41,10 +26,18 @@ const VideoShow = () => {
         <Typography variant="h5">{video.videoTitle}</Typography>
         <VideoPlayer ref={playerRef} tableRef={tableRef} />
 
-        <div style={{ marginBottom: "1em" }}>{/* <InVideoSearch /> */}</div>
-
-        <div style={{ marginBottom: "1em" }}>
-          <TranscriptTable ref={tableRef} playerRef={playerRef} />
+        <div
+          style={{
+            marginBottom: "1em",
+            height: 400,
+            display: "flex",
+            gap: "1em",
+          }}
+        >
+          <div style={{ flexGrow: 1 }}>
+            <TranscriptTable ref={tableRef} playerRef={playerRef} />
+          </div>
+          <InVideoSearch playerRef={playerRef} />
         </div>
       </div>
     );

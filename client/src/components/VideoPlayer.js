@@ -24,6 +24,16 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
 
   const videoPlaySeconds = (seconds) => {
     videoStop();
+    tableRef.current.scrollToSeconds(seconds);
+
+    // Solve seekto when video isn't loaded
+    if (playerRef.current.getSecondsLoaded() === 0) {
+      setTimeout(
+        () => playerRef.current.player.seekTo(seconds, "seconds"),
+        500
+      );
+    }
+
     playerRef.current.player.seekTo(seconds, "seconds");
     videoPlay();
   };
@@ -31,6 +41,10 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
   useImperativeHandle(ref, () => ({ playerRef, videoPlaySeconds }));
 
   //   Prevent autoplay when video source changes
+  const onVideoLoad = () => {
+    tableRef.current.scrollToSeconds(0);
+  };
+
   useEffect(() => {
     videoStop();
   }, [video.videoId]);
@@ -40,6 +54,7 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
       style={{
         maxWidth: "100%",
         maxHeight: 360,
+        marginBottom: "2em",
       }}
     >
       <div className="player-wrapper">
@@ -54,7 +69,7 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
             ref={playerRef}
             className="react-player"
             controls={true}
-            onReady={() => tableRef.current.scrollToSeconds(0)}
+            onReady={onVideoLoad}
             onPlay={videoPlay}
             onPause={videoStop}
             onEnded={videoStop}

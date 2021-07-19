@@ -14,7 +14,7 @@ class YoutubeCaption:
         sections = []
         caption = self.caption.split('\n')
         # Divide caption into sections (each sections is 4 lines each: 1. section number, 2. timestamps, 3. text, 4. newline)
-        for index in range(len(caption) // 4):
+        for index in range(len(caption) // 4 + 1):
             base = index * 4
             # create new item in subtitle
             sections.append({
