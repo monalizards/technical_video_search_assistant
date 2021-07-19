@@ -1,6 +1,7 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React from "react";
+import { VideoProvider } from "./VideoContext";
 import VideoSearchBar from "./VideoSearchBar";
 import VideoShow from "./VideoShow";
 import {
@@ -53,13 +54,8 @@ const useStyles = makeStyles((theme) => ({
 // receive data from VideoSearchBar
 
 export default function App() {
-  const [videoResult, setVideoResult] = useState({});
-
-  const onReceive = (results) => {
-    setVideoResult(results);
-  };
-
   const classes = useStyles();
+
   return (
     <React.Fragment>
       {/* set up Material-UI Themes & css */}
@@ -76,19 +72,21 @@ export default function App() {
         </AppBar>
         {/* Main content */}
         {/* 1. Video Search Bar */}
-        <Container>
-          <div className={classes.bottomMargin}>
-            <VideoSearchBar onReceive={onReceive} />
-          </div>
-          {/* 2. All video-related things */}
-          <VideoShow videoResult={videoResult} />
-        </Container>
+        <VideoProvider>
+          <Container>
+            <div className={classes.bottomMargin}>
+              <VideoSearchBar />
+            </div>
+            {/* 2. All video-related things */}
+            <VideoShow />
+          </Container>
+        </VideoProvider>
         {/* 3. Footer */}
         {/* <footer>
           <Box>
-            <Container>
-              <Link href="/">Email me</Link>
-            </Container>
+          <Container>
+          <Link href="/">Email me</Link>
+          </Container>
           </Box>
         </footer> */}
       </ThemeProvider>

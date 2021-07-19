@@ -3,6 +3,7 @@ import server from "../apis/server";
 import { css } from "@emotion/react";
 import { Box, TextField } from "@material-ui/core";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useVideo } from "./VideoContext";
 
 // React spinners css
 // ref: https://github.com/davidhu2000/react-spinners
@@ -10,13 +11,16 @@ const override = css`
   margin-left: 8px;
 `;
 
-const VideoSearchBar = ({ onReceive }) => {
+const VideoSearchBar = () => {
   //   initiate URL state
   const [url, setUrl] = useState("");
   //   Load spinner
   const [loading, setLoading] = useState(false);
   // show error
   const [error, setError] = useState("");
+  // use video context
+  const { setVideo } = useVideo();
+
   //   fetch video and caption from server
   const onURLSubmit = (e) => {
     setError("");
@@ -30,10 +34,10 @@ const VideoSearchBar = ({ onReceive }) => {
         .then((res) => {
           const { results } = res.data;
           if (results.status === 200) {
-            onReceive(results);
+            setVideo(results);
           } else if (results.status === 400) {
             setError(results.message);
-            onReceive({});
+            setVideo({});
           }
           setTimeout(() => {
             setLoading(false);

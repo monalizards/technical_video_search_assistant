@@ -1,56 +1,41 @@
 import "./VideoShow.css";
-import server from "../apis/server";
 
 import { useState, useEffect, useRef } from "react";
+import { useVideo } from "./VideoContext";
 
 import ReactPlayer from "react-player/youtube";
 import { Typography } from "@material-ui/core";
 
 import TranscriptTable from "./TranscriptTable";
-import InVideoSearch from "./InVideoSearch";
+// import InVideoSearch from "./InVideoSearch";
 
-const params = (videoResult, searchType, queryContent) => {
+const params = (video, searchType, queryContent) => {
   if (searchType === "search") {
     return {
       query: queryContent,
-      text: videoResult.caption_fulltext,
-      sections: videoResult.caption_sections,
+      text: video.caption_fulltext,
+      sections: video.caption_sections,
     };
   } else {
     return {
       question: queryContent,
-      text: videoResult.caption_fulltext,
+      text: video.caption_fulltext,
     };
   }
 };
 
-const VideoShow = ({ videoResult }) => {
+const VideoShow = () => {
   const [playing, setPlaying] = useState(false);
-  const [result, setResult] = useState({});
-  const [error, setError] = useState("");
+
+  const { video } = useVideo();
+
   const playerRef = useRef();
   const tableRef = useRef();
 
   // Prevent autoplay when url changes
   useEffect(() => {
     setPlaying(false);
-  }, [videoResult]);
-
-  const onFormSubmit = (searchType, queryContent) => {
-    // console.log(searchType, queryContent);
-    setResult({});
-    server
-      .post(`${searchType}`, params(videoResult, searchType, queryContent))
-      .then(({ data }) => {
-        console.log(data);
-        setResult(data.results);
-        console.log(result);
-      })
-      .catch((err) => {
-        setError(err.toJSON());
-        console.log(error);
-      });
-  };
+  }, [video]);
 
   // play video to a specific timestamp
   const seekToPlay = (timestamp) => {
@@ -76,10 +61,10 @@ const VideoShow = ({ videoResult }) => {
     tableRef.current.scrollToSeconds(playedSeconds);
   };
 
-  if (Object.keys(videoResult).length !== 0 && videoResult.status === 200) {
+  if (Object.keys(video).length !== 0 && video.status === 200) {
     return (
       <div>
-        <Typography variant="h5">{videoResult.videoTitle}</Typography>
+        <Typography variant="h5">{video.videoTitle}</Typography>
         <div
           style={{
             maxWidth: "100%",
@@ -113,21 +98,19 @@ const VideoShow = ({ videoResult }) => {
                   maxWidth: 640,
                   maxHeight: 360,
                 }}
-                url={`https://www.youtube.com/watch?v=${videoResult.videoId}`}
+                url={`https://www.youtube.com/watch?v=${video.videoId}`}
               />
             </div>
           </div>
         </div>
 
-        <div style={{ marginBottom: "1em" }}>
-          <InVideoSearch onSubmit={onFormSubmit} />
-        </div>
+        <div style={{ marginBottom: "1em" }}>{/* <InVideoSearch /> */}</div>
 
         <div style={{ marginBottom: "1em" }}>
           <TranscriptTable
             ref={tableRef}
             seekToPlay={seekToPlay}
-            captionSections={videoResult.caption_sections}
+            captionSections={video.caption_sections}
           />
         </div>
       </div>
