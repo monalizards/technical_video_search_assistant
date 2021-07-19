@@ -4,6 +4,7 @@ import { intervalToDuration } from "date-fns";
 
 import "./TranscriptTable.css";
 import { useState, forwardRef, useImperativeHandle } from "react";
+import { useVideo } from "./VideoContext";
 
 // helper functions to style timestamps
 // takes time interval as string, output an object with start time and end time in float
@@ -31,9 +32,10 @@ const formatTableTime = (time) => {
   return `${timestamps.startTime}`;
 };
 
-const TranscriptTable = forwardRef(({ seekToPlay, captionSections }, ref) => {
+const TranscriptTable = forwardRef(({ playerRef }, ref) => {
+  const { video } = useVideo();
   // format sections with useful information to display
-  let sections = JSON.parse(captionSections);
+  let sections = JSON.parse(video.caption_sections);
   sections = sections.map((section) => {
     return {
       section: parseInt(section.section),
@@ -87,7 +89,9 @@ const TranscriptTable = forwardRef(({ seekToPlay, captionSections }, ref) => {
                     return {};
                   }
                 }}
-                onRowClick={({ rowData }) => seekToPlay(rowData.startTime)}
+                onRowClick={({ rowData }) => {
+                  playerRef.current.videoPlaySeconds(rowData.startTime);
+                }}
               >
                 <Column dataKey="timeString" label="Time" width={100} />
                 <Column
@@ -104,7 +108,7 @@ const TranscriptTable = forwardRef(({ seekToPlay, captionSections }, ref) => {
     );
   };
 
-  return <div>{renderTable(sections, seekToPlay)}</div>;
+  return <div>{renderTable()}</div>;
 });
 
 export default TranscriptTable;

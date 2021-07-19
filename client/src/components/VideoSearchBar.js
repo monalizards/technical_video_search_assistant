@@ -34,14 +34,12 @@ const VideoSearchBar = () => {
         .then((res) => {
           const { results } = res.data;
           if (results.status === 200) {
-            setVideo(results);
+            setVideo({ ...results, playedSeconds: 0 });
           } else if (results.status === 400) {
             setError(results.message);
             setVideo({});
           }
-          setTimeout(() => {
-            setLoading(false);
-          }, 50000);
+          setLoading(false);
         })
         .catch((err) => {
           setError(err.message);
