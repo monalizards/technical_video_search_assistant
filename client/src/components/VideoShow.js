@@ -26,6 +26,8 @@ const params = (videoResult, searchType, queryContent) => {
 
 const VideoShow = ({ videoResult }) => {
   const [playing, setPlaying] = useState(false);
+  const [result, setResult] = useState({});
+  const [error, setError] = useState("");
   const playerRef = useRef();
   const tableRef = useRef();
 
@@ -36,9 +38,18 @@ const VideoShow = ({ videoResult }) => {
 
   const onFormSubmit = (searchType, queryContent) => {
     // console.log(searchType, queryContent);
+    setResult({});
     server
       .post(`${searchType}`, params(videoResult, searchType, queryContent))
-      .then((res) => console.log(res.data));
+      .then(({ data }) => {
+        console.log(data);
+        setResult(data.results);
+        console.log(result);
+      })
+      .catch((err) => {
+        setError(err.toJSON());
+        console.log(error);
+      });
   };
 
   // play video to a specific timestamp

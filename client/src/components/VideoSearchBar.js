@@ -1,7 +1,14 @@
 import { useState } from "react";
 import server from "../apis/server";
+import { css } from "@emotion/react";
 import { Box, TextField } from "@material-ui/core";
 import ClipLoader from "react-spinners/ClipLoader";
+
+// React spinners css
+// ref: https://github.com/davidhu2000/react-spinners
+const override = css`
+  margin-left: 8px;
+`;
 
 const VideoSearchBar = ({ onReceive }) => {
   //   initiate URL state
@@ -28,7 +35,9 @@ const VideoSearchBar = ({ onReceive }) => {
             setError(results.message);
             onReceive({});
           }
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 50000);
         })
         .catch((err) => {
           setError(err.message);
@@ -40,7 +49,7 @@ const VideoSearchBar = ({ onReceive }) => {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       {/* Ask user for URL */}
-      <form onSubmit={onURLSubmit} style={{ display: "inline", width: "100%" }}>
+      <form onSubmit={onURLSubmit} style={{ width: "100%" }}>
         <TextField
           error={error !== ""}
           helperText={error}
@@ -54,13 +63,7 @@ const VideoSearchBar = ({ onReceive }) => {
           className="input-no-padding"
         />
       </form>
-
-      <ClipLoader
-        loading={loading}
-        color="#0d47a1"
-        size="2em"
-        style={{ marginLeft: "1em" }}
-      />
+      <ClipLoader loading={loading} css={override} color="#26418f" size="2em" />
     </Box>
   );
 };

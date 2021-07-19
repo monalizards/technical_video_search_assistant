@@ -18,6 +18,7 @@ const InVideoSearch = ({ onSubmit }) => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(searchType, queryContent);
+    setQueryContent("");
   };
 
   const onSwitchChange = (e) => {

@@ -1,7 +1,7 @@
 # caption
 echo "\n---Test 1: fetch caption----"
 curl -X 'POST' \
-  'https://technicalvideosearchassistant.azurewebsites.net/caption/' \
+  'https://technicalvideosearchassistant.azurewebsites.net/caption' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -11,7 +11,7 @@ curl -X 'POST' \
 # search
 echo "\n---Test 2: search----"
 curl -X 'POST' \
-  'https://technicalvideosearchassistant.azurewebsites.net/caption/search/' \
+  'https://technicalvideosearchassistant.azurewebsites.net/caption/search' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -24,7 +24,7 @@ curl -X 'POST' \
 # qa
 echo "\n---Test 3: QA----"
 curl -X 'POST' \
-  'https://technicalvideosearchassistant.azurewebsites.net/caption/qa/' \
+  'https://technicalvideosearchassistant.azurewebsites.net/caption/qa' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

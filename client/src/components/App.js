@@ -42,9 +42,6 @@ const theme = createTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
-  topMarginLarge: {
-    marginTop: "2em",
-  },
   bottomMargin: {
     marginBottom: "1em",
   },
@@ -69,7 +66,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {/* Navbar */}
-        <AppBar position="sticky">
+        <AppBar position="sticky" className={classes.bottomMargin}>
           <Toolbar variant="dense">
             <FastForward fontSize="large" />
             <Typography variant="h4" className={classes.navHeader}>
@@ -79,7 +76,7 @@ export default function App() {
         </AppBar>
         {/* Main content */}
         {/* 1. Video Search Bar */}
-        <Container className={classes.topMarginLarge}>
+        <Container>
           <div className={classes.bottomMargin}>
             <VideoSearchBar onReceive={onReceive} />
           </div>
