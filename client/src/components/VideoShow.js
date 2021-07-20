@@ -26,18 +26,13 @@ const VideoShow = () => {
         <Typography variant="h5">{video.videoTitle}</Typography>
         <VideoPlayer ref={playerRef} tableRef={tableRef} />
 
-        <div
-          style={{
-            marginBottom: "1em",
-            height: 400,
-            display: "flex",
-            gap: "1em",
-          }}
-        >
-          <div style={{ flexGrow: 1 }}>
+        <div className="flex-container">
+          <div className="table">
             <TranscriptTable ref={tableRef} playerRef={playerRef} />
           </div>
-          <InVideoSearch playerRef={playerRef} />
+          <div className="history">
+            <InVideoSearch playerRef={playerRef} />
+          </div>
         </div>
       </div>
     );

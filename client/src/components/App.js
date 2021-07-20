@@ -34,7 +34,6 @@ const theme = createTheme({
       textAlign: "center",
       fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
       fontWeight: "700",
-      marginBottom: "1rem",
     },
     h4: {
       fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
@@ -46,6 +45,9 @@ const theme = createTheme({
 const useStyles = makeStyles((theme) => ({
   bottomMargin: {
     marginBottom: "1em",
+  },
+  smallBottomMargin: {
+    marginBottom: "4px",
   },
   navHeader: {
     marginLeft: "2em",
@@ -75,7 +77,7 @@ export default function App() {
         {/* 1. Video Search Bar */}
         <VideoProvider>
           <Container>
-            <div className={classes.bottomMargin}>
+            <div className={classes.smallBottomMargin}>
               <VideoSearchBar />
             </div>
             {/* 2. All video-related things */}
