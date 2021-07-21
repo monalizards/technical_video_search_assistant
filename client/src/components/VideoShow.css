@@ -13,15 +13,13 @@
 
 .flex-container {
   margin-bottom: 1em;
-  height: 400px;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
 }
 
 .table {
-  /* TODO: increase width after testing UI */
-  /* width: 20px; */
   width: 600px;
   flex-grow: 1;
 }

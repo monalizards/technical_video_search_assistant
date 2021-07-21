@@ -13,14 +13,15 @@ import {
 } from "@material-ui/core/styles";
 import {
   AppBar,
-  // Box,
+  Link,
   CssBaseline,
   Container,
   Toolbar,
   Typography,
-  // Link,
+  a,
+  IconButton,
 } from "@material-ui/core";
-import { FastForward } from "@material-ui/icons";
+import { FastForward, GitHub, LinkedIn } from "@material-ui/icons";
 
 // Material UI styling
 
@@ -52,9 +53,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "4px",
   },
   navHeader: {
-    marginLeft: "2em",
+    marginLeft: "1em",
+    flexGrow: 1,
   },
 }));
+
+const links = {
+  github: "https://github.com/monalizards/technical_video_search_assistant",
+  linkedIn: "https://www.linkedin.com/in/mona-chung/",
+};
 
 // receive data from VideoSearchBar
 
@@ -62,41 +69,47 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <div className="body">
       {/* set up Material-UI Themes & css */}
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {/* Navbar */}
-        <AppBar position="sticky" className={classes.bottomMargin}>
-          <Toolbar variant="dense">
-            <FastForward fontSize="large" />
-            <Typography variant="h4" className={classes.navHeader}>
-              Technical Video Search Assistant
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <nav>
+          <AppBar position="static" className={classes.bottomMargin}>
+            <Toolbar variant="dense">
+              <FastForward fontSize="large" />
+              <Typography variant="h4" className={classes.navHeader}>
+                Technical Video Search Assistant
+              </Typography>
+              <IconButton>
+                <Link href={links.github} target="_blank" color="inherit">
+                  <GitHub fontSize="small" />
+                </Link>
+              </IconButton>
+              <IconButton>
+                <Link href={links.linkedIn} target="_blank" color="inherit">
+                  <LinkedIn fontSize="small" />
+                </Link>
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        </nav>
         {/* Main content */}
-        {/* 1. Video Search Bar */}
-        <VideoProvider>
-          <HistoryProvider>
-            <Container>
-              <div className={classes.smallBottomMargin}>
-                <VideoSearchBar />
-              </div>
-              {/* 2. All video-related things */}
-              <VideoShow />
-            </Container>
-          </HistoryProvider>
-        </VideoProvider>
-        {/* 3. Footer */}
-        {/* <footer>
-          <Box>
-          <Container>
-          <Link href="/">Email me</Link>
-          </Container>
-          </Box>
-        </footer> */}
+        <main>
+          {/* 1. Video Search Bar */}
+          <VideoProvider>
+            <HistoryProvider>
+              <Container>
+                <div className={classes.smallBottomMargin}>
+                  <VideoSearchBar />
+                </div>
+                {/* 2. All video-related things */}
+                <VideoShow />
+              </Container>
+            </HistoryProvider>
+          </VideoProvider>
+        </main>
       </ThemeProvider>
-    </React.Fragment>
+    </div>
   );
 }
