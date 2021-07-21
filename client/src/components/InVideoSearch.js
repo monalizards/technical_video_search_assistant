@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  CircularProgress,
   Paper,
   FormGroup,
   Grid,
@@ -43,6 +44,7 @@ const InVideoSearch = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [qaProgress, setQAProgress] = useState("");
 
   // handle form changes
   const onSwitchChange = (e) => {
@@ -65,6 +67,7 @@ const InVideoSearch = () => {
   // handle form submission
   const onFormSubmit = (e) => {
     setError("");
+    setQAProgress("");
     e.preventDefault();
     if (request.content.trim() === "") {
       setError("Please enter your query");
@@ -74,13 +77,21 @@ const InVideoSearch = () => {
     const params = formatParams();
     // console.log(params);
     setLoading(true);
+    // display progress text for qa requests
+    if (request.type === searchTypes.qa) {
+      setQAProgress(`Approximate progress: x%`);
+    }
+
     server
       .post(`/${request.type}`, params)
       .then(({ data }) => {
         addHistory({ request, response: data });
       })
       .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setQAProgress("");
+      });
     setRequest({ ...request, content: "" });
   };
 
@@ -119,12 +130,18 @@ const InVideoSearch = () => {
                     />
                   </Grid>
                   <Grid item>Q.A.</Grid>
+                  <CircularProgress
+                    color="secondary"
+                    size="1em"
+                    variant="determinate"
+                    value={loading ? 25 : 0}
+                  />
                 </Grid>
               </Typography>
               <TextField
                 disabled={loading}
                 error={error !== ""}
-                helperText={error}
+                helperText={error || qaProgress}
                 variant="filled"
                 size="small"
                 value={request.content}
