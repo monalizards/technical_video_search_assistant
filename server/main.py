@@ -69,4 +69,4 @@ async def caption_search(search: Search) -> dict:
 @app.post("/caption/qa")
 async def caption_qa(qa_query: QA) -> dict:
     results = qa(qa_query.question, qa_query.text)
-    return {"results": results}
+    return {"status": 200, "results": results}

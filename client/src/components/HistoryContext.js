@@ -6,12 +6,12 @@ export const HistoryProvider = ({ children }) => {
   const [history, setHistory] = useState([]);
 
   // add an item in history with the request and response
-  const addHistory = (req, res) => {
-    setHistory(history.add({ req, res }));
+  const addHistory = (entry) => {
+    setHistory([...history, entry]);
   };
 
   return (
-    <HistoryContext.Provider value={(history, addHistory)}>
+    <HistoryContext.Provider value={{ history, addHistory }}>
       {children}
     </HistoryContext.Provider>
   );

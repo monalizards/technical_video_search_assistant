@@ -7,39 +7,11 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-// import server from "../apis/server";
+import server from "../apis/server";
 import "./InVideoSearch.css";
-
-// const params = (video, searchType, queryContent) => {
-//   if (searchType === "search") {
-//     return {
-//       query: queryContent,
-//       text: video.caption_fulltext,
-//       sections: video.caption_sections,
-//     };
-//   } else {
-//     return {
-//       question: queryContent,
-//       text: video.caption_fulltext,
-//     };
-//   }
-// };
-
-// const onFormSubmit = (searchType, queryContent) => {
-//   // console.log(searchType, queryContent);
-//   // setResult({});
-//   server
-//     .post(`${searchType}`, (videoResult, searchType, queryContent))
-//     .then(({ data }) => {
-//       console.log(data);
-//       // setResult(data.results);
-//       // console.log(result);
-//     });
-//   // .catch((err) => {
-//   //   setError(err.toJSON());
-//   //   console.log(error);
-//   // });
-// };
+import { useVideo } from "./VideoContext";
+import { useHistory } from "./HistoryContext";
+import SearchLog from "./SearchLog";
 
 const searchTypes = {
   search: "search",
@@ -47,10 +19,30 @@ const searchTypes = {
 };
 
 const InVideoSearch = () => {
+  const { video } = useVideo();
+  const { addHistory } = useHistory();
   const [request, setRequest] = useState({
     type: searchTypes.search,
     content: "",
   });
+
+  const formatParams = () => {
+    if (request.type === searchTypes.search) {
+      return {
+        query: request.content,
+        text: video.caption_fulltext,
+        sections: video.caption_sections,
+      };
+    } else {
+      return {
+        question: request.content,
+        text: video.caption_fulltext,
+      };
+    }
+  };
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // handle form changes
   const onSwitchChange = (e) => {
@@ -72,9 +64,23 @@ const InVideoSearch = () => {
 
   // handle form submission
   const onFormSubmit = (e) => {
+    setError("");
     e.preventDefault();
-    console.log(request);
-    // onSubmit(searchType, queryContent);
+    if (request.content.trim() === "") {
+      setError("Please enter your query");
+      return;
+    }
+    // console.log(request);
+    const params = formatParams();
+    // console.log(params);
+    setLoading(true);
+    server
+      .post(`/${request.type}`, params)
+      .then(({ data }) => {
+        addHistory({ request, response: data });
+      })
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
     setRequest({ ...request, content: "" });
   };
 
@@ -87,46 +93,7 @@ const InVideoSearch = () => {
         </div>
         {/* History */}
         <div className="card-content">
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
-          <div>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex quod ab
-            quae, minus distinctio quas libero earum, ipsa laudantium eveniet id
-            qui, a recusandae maxime sequi aut. Ut, sapiente nobis.
-          </div>
+          <SearchLog />
         </div>
         {/* Searchbar */}
         <div className="card-actions">
@@ -145,6 +112,7 @@ const InVideoSearch = () => {
                   <Grid item>Keyword/Phase</Grid>
                   <Grid item>
                     <Switch
+                      disabled={loading}
                       checked={request.type === searchTypes.qa}
                       onChange={onSwitchChange}
                       name="type"
@@ -154,6 +122,9 @@ const InVideoSearch = () => {
                 </Grid>
               </Typography>
               <TextField
+                disabled={loading}
+                error={error !== ""}
+                helperText={error}
                 variant="filled"
                 size="small"
                 value={request.content}

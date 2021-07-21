@@ -20,9 +20,7 @@
 }
 
 .table {
-  /* TODO: change width back after coding history */
-  width: 200px;
-  /* width: 640px; */
+  width: 640px;
   flex-grow: 1;
 }
 

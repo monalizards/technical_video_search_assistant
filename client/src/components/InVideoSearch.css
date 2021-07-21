@@ -1,13 +1,18 @@
-.card-header,
-.card-content {
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
+.card > * {
   padding: 6px 20px;
 }
 
 .card-header {
   height: 40px;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
   display: flex;
   align-items: center;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
 }
 
 .card-header > h6 {
@@ -18,15 +23,12 @@
 }
 
 .card-content {
-  max-height: 280px;
-  overflow: scroll;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.4);
+  width: inherit;
+  overflow-y: scroll;
+  flex-grow: 1;
 }
 
 .card-actions {
-  padding: 0 20px 11px 20px;
-}
-
-.form-group {
-  display: flex;
+  padding: 0 20px 12px 20px;
 }

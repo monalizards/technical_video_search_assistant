@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useVideo } from "./VideoContext";
 
 import { Typography } from "@material-ui/core";
-
+import { HistoryProvider } from "./HistoryContext";
 import TranscriptTable from "./TranscriptTable";
 import VideoPlayer from "./VideoPlayer";
 import InVideoSearch from "./InVideoSearch";
@@ -25,15 +25,16 @@ const VideoShow = () => {
       <div>
         <Typography variant="h5">{video.videoTitle}</Typography>
         <VideoPlayer ref={playerRef} tableRef={tableRef} />
-
-        <div className="flex-container">
-          <div className="table">
-            <TranscriptTable ref={tableRef} playerRef={playerRef} />
+        <HistoryProvider>
+          <div className="flex-container">
+            <div className="table">
+              <TranscriptTable ref={tableRef} playerRef={playerRef} />
+            </div>
+            <div className="history">
+              <InVideoSearch playerRef={playerRef} />
+            </div>
           </div>
-          <div className="history">
-            <InVideoSearch playerRef={playerRef} />
-          </div>
-        </div>
+        </HistoryProvider>
       </div>
     );
   }
