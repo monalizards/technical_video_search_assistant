@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useHistory } from "./HistoryContext";
-import { useVideo } from "./VideoContext";
 import "./SearchLog.css";
 import React from "react";
+import { SearchResultButton } from "./SearchResultButton";
 
 const capitalizeFirstLetter = (string) => {
   return `${string[0].toUpperCase()}${string.substring(1)}`;
@@ -14,18 +14,34 @@ const styleSearchResponseHeader = (query, correction) => {
   return `Showing matches for: ${query}`;
 };
 
-const styleSearchResponse = (query, result) => {
-  // const header = styleSearchResponseHeader(query, result.correction);
+const styleSearchResponse = (query, result, playerRef) => {
+  const renderSearchResults = (results) => {
+    const currentTime = playerRef.current.getCurrentTime();
+
+    return results.map((result, index) => {
+      return (
+        <SearchResultButton
+          key={index}
+          currentTime={currentTime}
+          result={result}
+          playerRef={playerRef}
+        ></SearchResultButton>
+      );
+    });
+  };
+
+  const header = styleSearchResponseHeader(query, result.correction);
   return (
     <>
-      {JSON.stringify(result)}
-      {/* <div className="search-response-header">{header}</div> */}
-      {/* <div className="search-response-results">{JSON.stringify(result)}</div> */}
+      <div className="search-header">{header}</div>
+      <div className="search-results">
+        {renderSearchResults(result.results)}
+      </div>
     </>
   );
 };
 
-const formatSearchLog = (log) => {
+const formatSearchLog = (log, playerRef) => {
   const request = (
     <div className="request-box search-request-box">
       Search: "{log.request.content}"
@@ -34,7 +50,11 @@ const formatSearchLog = (log) => {
 
   const response = (
     <div className="response-box search-response-box">
-      {styleSearchResponse(log.request.content, log.response.results)}
+      {styleSearchResponse(
+        log.request.content,
+        log.response.results,
+        playerRef
+      )}
     </div>
   );
 
@@ -67,11 +87,8 @@ const formatQALog = (log) => {
   );
 };
 
-const SearchLog = () => {
-  const { history, clearHistory } = useHistory();
-  const { video } = useVideo();
-
-  useEffect(() => clearHistory(), [video.videoId]);
+const SearchLog = ({ playerRef }) => {
+  const { history } = useHistory();
 
   const renderHistory = () => {
     let content = null;
@@ -79,7 +96,7 @@ const SearchLog = () => {
       <ul>
         {history.map((log, index) => {
           if (log.request.type === "search") {
-            content = formatSearchLog(log);
+            content = formatSearchLog(log, playerRef);
           } else if (log.request.type === "qa") {
             content = formatQALog(log);
           }

@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 import { Box, TextField } from "@material-ui/core";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useVideo } from "./VideoContext";
+import { useHistory } from "./HistoryContext";
 
 // React spinners css
 // ref: https://github.com/davidhu2000/react-spinners
@@ -20,6 +21,7 @@ const VideoSearchBar = () => {
   const [error, setError] = useState("");
   // use video context
   const { setVideo } = useVideo();
+  const { clearHistory } = useHistory();
 
   //   fetch video and caption from server
   const onURLSubmit = (e) => {
@@ -45,6 +47,7 @@ const VideoSearchBar = () => {
         })
         .finally(() => {
           setLoading(false);
+          clearHistory();
         });
     }
   };

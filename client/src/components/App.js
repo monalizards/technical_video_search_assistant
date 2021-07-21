@@ -2,6 +2,8 @@ import "./App.css";
 
 import React from "react";
 import { VideoProvider } from "./VideoContext";
+import { HistoryProvider } from "./HistoryContext";
+
 import VideoSearchBar from "./VideoSearchBar";
 import VideoShow from "./VideoShow";
 import {
@@ -76,13 +78,15 @@ export default function App() {
         {/* Main content */}
         {/* 1. Video Search Bar */}
         <VideoProvider>
-          <Container>
-            <div className={classes.smallBottomMargin}>
-              <VideoSearchBar />
-            </div>
-            {/* 2. All video-related things */}
-            <VideoShow />
-          </Container>
+          <HistoryProvider>
+            <Container>
+              <div className={classes.smallBottomMargin}>
+                <VideoSearchBar />
+              </div>
+              {/* 2. All video-related things */}
+              <VideoShow />
+            </Container>
+          </HistoryProvider>
         </VideoProvider>
         {/* 3. Footer */}
         {/* <footer>

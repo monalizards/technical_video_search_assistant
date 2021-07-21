@@ -38,7 +38,12 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
     videoPlay();
   };
 
-  useImperativeHandle(ref, () => ({ videoPlaySeconds }));
+  const getCurrentTime = () => {
+    const timestamp = playerRef.current.getCurrentTime();
+    return timestamp;
+  };
+
+  useImperativeHandle(ref, () => ({ videoPlaySeconds, getCurrentTime }));
 
   //   Prevent autoplay when video source changes
   const onVideoLoad = () => {

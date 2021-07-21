@@ -15,7 +15,7 @@ li > * {
   margin: 4px;
   padding: 6px 12px;
   border-radius: 4px;
-  max-width: 300px;
+  max-width: 90%;
 }
 
 .request-box {
@@ -26,4 +26,9 @@ li > * {
 .response-box {
   background-color: #5a5a5a;
   align-self: flex-start;
+}
+
+.search-results {
+  display: flex;
+  flex-wrap: Wrap;
 }

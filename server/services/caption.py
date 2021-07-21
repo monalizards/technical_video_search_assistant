@@ -32,8 +32,8 @@ def pipeline(url):
                 'videoLength': yt.length,
                 'caption_sections': json.dumps(caption.list_sections()),
                 'caption_fulltext': caption.full_text()}
-    except:
-        return {'status': 400, 'message': 'Unable to generate captions'}
+    except Exception as e:
+        return {'status': 400, 'message': f'Unable to generate captions. {e}'}
 
 
 if __name__ == "__main__":

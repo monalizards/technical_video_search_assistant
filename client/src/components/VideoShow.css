@@ -20,7 +20,9 @@
 }
 
 .table {
-  width: 20px;
+  /* TODO: increase width after testing UI */
+  /* width: 20px; */
+  width: 600px;
   flex-grow: 1;
 }
 

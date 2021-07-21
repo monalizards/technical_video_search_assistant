@@ -19,7 +19,7 @@ const searchTypes = {
   qa: "qa",
 };
 
-const InVideoSearch = () => {
+const InVideoSearch = ({ playerRef }) => {
   const { video } = useVideo();
   const { addHistory } = useHistory();
   const [request, setRequest] = useState({
@@ -107,7 +107,7 @@ const InVideoSearch = () => {
         </div>
         {/* History */}
         <div className="card-content">
-          <SearchLog />
+          <SearchLog playerRef={playerRef} />
         </div>
         {/* Searchbar */}
         <div className="card-actions">
