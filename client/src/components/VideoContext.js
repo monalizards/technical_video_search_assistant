@@ -3,7 +3,7 @@ import { createContext, useState, useContext } from "react";
 const VideoContext = createContext();
 
 export const VideoProvider = ({ children }) => {
-  const [video, setVideo] = useState({});
+  const [video, setVideo] = useState(null);
 
   const updatePlayedSeconds = (playedSeconds) => {
     setVideo({ ...video, playedSeconds });

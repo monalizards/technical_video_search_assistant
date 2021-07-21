@@ -10,8 +10,13 @@ export const HistoryProvider = ({ children }) => {
     setHistory([...history, entry]);
   };
 
+  // reset history array (used when a new video is fetched)
+  const clearHistory = () => {
+    setHistory([]);
+  };
+
   return (
-    <HistoryContext.Provider value={{ history, addHistory }}>
+    <HistoryContext.Provider value={{ history, addHistory, clearHistory }}>
       {children}
     </HistoryContext.Provider>
   );

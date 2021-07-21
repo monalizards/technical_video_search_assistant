@@ -20,7 +20,7 @@ const VideoShow = () => {
   //   return timestamp;
   // };
 
-  if (Object.keys(video).length !== 0 && video.status === 200) {
+  if (video && video.status === 200) {
     return (
       <div>
         <Typography variant="h5">{video.videoTitle}</Typography>

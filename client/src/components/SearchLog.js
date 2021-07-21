@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useHistory } from "./HistoryContext";
+import { useVideo } from "./VideoContext";
 import "./SearchLog.css";
+import React from "react";
 
 const capitalizeFirstLetter = (string) => {
   return `${string[0].toUpperCase()}${string.substring(1)}`;
@@ -13,11 +15,12 @@ const styleSearchResponseHeader = (query, correction) => {
 };
 
 const styleSearchResponse = (query, result) => {
-  const header = styleSearchResponseHeader(query, result.correction);
+  // const header = styleSearchResponseHeader(query, result.correction);
   return (
     <>
-      <div className="search-response-header">{header}</div>
       {JSON.stringify(result)}
+      {/* <div className="search-response-header">{header}</div> */}
+      {/* <div className="search-response-results">{JSON.stringify(result)}</div> */}
     </>
   );
 };
@@ -65,7 +68,10 @@ const formatQALog = (log) => {
 };
 
 const SearchLog = () => {
-  const { history } = useHistory();
+  const { history, clearHistory } = useHistory();
+  const { video } = useVideo();
+
+  useEffect(() => clearHistory(), [video.videoId]);
 
   const renderHistory = () => {
     let content = null;

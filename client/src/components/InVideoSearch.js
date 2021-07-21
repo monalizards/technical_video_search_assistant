@@ -44,7 +44,7 @@ const InVideoSearch = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [qaProgress, setQAProgress] = useState("");
+  const [progress, setProgress] = useState(0);
 
   // handle form changes
   const onSwitchChange = (e) => {
@@ -67,7 +67,7 @@ const InVideoSearch = () => {
   // handle form submission
   const onFormSubmit = (e) => {
     setError("");
-    setQAProgress("");
+    setProgress("");
     e.preventDefault();
     if (request.content.trim() === "") {
       setError("Please enter your query");
@@ -77,9 +77,12 @@ const InVideoSearch = () => {
     const params = formatParams();
     // console.log(params);
     setLoading(true);
+    // TODO: calculate estimated progress
     // display progress text for qa requests
     if (request.type === searchTypes.qa) {
-      setQAProgress(`Approximate progress: x%`);
+      setProgress(25);
+    } else if (request.type === searchTypes.search) {
+      setProgress(75);
     }
 
     server
@@ -90,7 +93,7 @@ const InVideoSearch = () => {
       .catch((e) => setError(e.message))
       .finally(() => {
         setLoading(false);
-        setQAProgress("");
+        setProgress(0);
       });
     setRequest({ ...request, content: "" });
   };
@@ -141,7 +144,11 @@ const InVideoSearch = () => {
               <TextField
                 disabled={loading}
                 error={error !== ""}
-                helperText={error || qaProgress}
+                helperText={
+                  error || progress === 0
+                    ? ""
+                    : `Approximate progress: ${progress}%`
+                }
                 variant="filled"
                 size="small"
                 value={request.content}

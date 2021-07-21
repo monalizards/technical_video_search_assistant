@@ -15,10 +15,11 @@ li > * {
   margin: 4px;
   padding: 6px 12px;
   border-radius: 4px;
+  max-width: 300px;
 }
 
 .request-box {
-  background-color: #3f50b5;
+  background-color: #3f51b5;
   align-self: flex-end;
 }
 
