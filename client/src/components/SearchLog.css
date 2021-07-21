@@ -16,6 +16,8 @@ li > * {
   padding: 6px 12px;
   border-radius: 4px;
   max-width: 90%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .request-box {

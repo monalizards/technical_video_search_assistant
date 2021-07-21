@@ -32,7 +32,13 @@ const VideoShow = () => {
   }
   return (
     <Typography variant="h5">
-      No video yet, please check if you have entered a valid URL.
+      <Typography variant="p">
+        No video yet, please check if you have entered a valid URL.
+      </Typography>
+      <Typography>
+        Note: If HTTP Error persists, the APIs might be unavailable / rate
+        limited.
+      </Typography>
     </Typography>
   );
 };

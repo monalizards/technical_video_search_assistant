@@ -52,3 +52,25 @@
   - axios
   - date-fns
   - react
+  - react-spinners
+  - react-virtualized
+
+## V1 (Completed on 21 July 2021)
+
+- User can search for a video using a link to the Youtube video
+- Display a video player
+- Display the transcription in a table
+- Search for keywords/ phases in the transcription
+  - User can click on the match to go to the specific point in the video
+    - Note: the timing is only an estimate due to overlaps in time in youtube caption sections and the timing of an individual word is not provided
+    - Overcome with other speech to text APIs but they can take much longer and reformatting needed
+- Search for answers
+- Handle errors
+
+## Plans for v2:
+
+- Get basic video information and player before transcription
+  - especially useful if no caption is directly available from youtube
+- Show load progress for requests
+- Use a library for keyword search to improve performance
+- Add ability to highlight matches in the transcription table
