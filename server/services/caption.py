@@ -24,15 +24,17 @@ def pipeline(url):
     # Generate caption
     try:
         #     Use youtube caption
-        # Code for pytube is temporarily unavailable
-        # c = find_en_caption(yt)
-        # if c:
-        #     caption = YoutubeCaption(c.generate_srt_captions())
-        #     print("YoutubeCaption created")
-        c = find_lang_caption(videoId)
-        if c:
-            caption = YoutubeApiCaption(c)
-            print("YoutubeApiCaption created")
+        try:
+            # Code for pytube is temporarily unavailable
+            c = find_en_caption(yt)
+            if c:
+                caption = YoutubeCaption(c.generate_srt_captions())
+                print("YoutubeCaption created")
+        except:
+            c = find_lang_caption(videoId)
+            if c:
+                caption = YoutubeApiCaption(c)
+                print("YoutubeApiCaption created")
 
         else:
             return
