@@ -31,15 +31,24 @@ const VideoShow = () => {
     );
   }
   return (
-    <Typography variant="h5">
+    <div
+      style={{
+        height: "80vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "4em",
+      }}
+    >
       <Typography variant="body1">
-        No video yet, please check if you have entered a valid URL.
+        Nothing here yet, please check if you have entered a valid URL.
       </Typography>
       <Typography variant="body2">
         Note: If HTTP Error persists, the APIs might be unavailable / rate
         limited.
       </Typography>
-    </Typography>
+    </div>
   );
 };
 
