@@ -18,7 +18,6 @@ import {
   Container,
   Toolbar,
   Typography,
-  a,
   IconButton,
 } from "@material-ui/core";
 import { FastForward, GitHub, LinkedIn } from "@material-ui/icons";
