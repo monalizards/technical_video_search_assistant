@@ -29,6 +29,8 @@ const VideoSearchBar = () => {
     setLoading(true);
     e.preventDefault();
     if (url) {
+      clearHistory();
+      setVideo(null);
       server
         .post("", {
           url,
@@ -47,7 +49,6 @@ const VideoSearchBar = () => {
         })
         .finally(() => {
           setLoading(false);
-          clearHistory();
         });
     }
   };
