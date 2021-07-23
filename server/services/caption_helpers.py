@@ -1,6 +1,8 @@
 import os
 from pytube import YouTube, Caption
-from services.caption_classes import YoutubeCaption, WatsonCaption
+import youtube_dl
+# from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
+from services.caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
 
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
@@ -10,7 +12,43 @@ def yt_find_id(yt):
     """
     return videoID for a given Pytube's Youtube object
     """
-    return yt.initial_data["currentVideoEndpoint"]["watchEndpoint"]["videoId"]
+    videoId = None
+    try:
+        videoId = yt.video_id
+    except:
+        videoId = yt.initial_data["currentVideoEndpoint"]["watchEndpoint"]["videoId"]
+    return videoId
+
+
+def yt_find_title(yt):
+    """
+    return video title for a given Pytube's Youtube object
+    """
+    title = None
+    try:
+        title = yt.title
+    except:
+        title = yt.initial_data["contents"]["twoColumnWatchNextResults"]["results"][
+            "results"]['contents'][0]['videoPrimaryInfoRenderer']['title']['runs'][0]['text']
+    return title
+
+
+def yt_find_length(yt):
+    """
+    return video length for a given Pytube's Youtube object
+    """
+    # TODO: fix find length
+    # return yt.length
+    pass
+
+
+def yt_info_summary(yt):
+    info = {
+        'id': yt_find_id(yt),
+        'title': yt_find_title(yt),
+    }
+    # 'length': yt_find_length(yt)
+    return info
 
 
 def find_en_caption(yt):

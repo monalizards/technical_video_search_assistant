@@ -1,5 +1,5 @@
-# YoutubeCaption class
 class YoutubeCaption:
+    # YoutubeCaption class
     def __init__(self, caption):
         self.caption = caption
         self.sectionlist = self.format_sections()
@@ -10,7 +10,7 @@ class YoutubeCaption:
         return f'<YoutubeCaption text="{self.text[:100]}... ">'
 
     def format_sections(self):
-        # function to convert srt into a list of itmes in the format {"time": {time}, "subtitle": {subtitle}}
+        # function to convert srt into a list of items in the format {"time": {time}, "subtitle": {subtitle}}
         sections = []
         caption = self.caption.split('\n')
         # Divide caption into sections (each sections is 4 lines each: 1. section number, 2. timestamps, 3. text, 4. newline)
@@ -50,17 +50,16 @@ class YoutubeCaption:
         seconds = int(hh) * 60 * 60 + int(mm) * 60 + int(ss) + int(ms) / 1000
         return seconds
 
-# WatsonCaption class
-
 
 class WatsonCaption:
+    # WatsonCaption class
     def __init__(self, result):
         self.result = result
         self.sectionlist = self.format_sections()
         self.text = self.compile_sections()
 
-#     print and preview caption
     def __str__(self):
+        #     print and preview caption
         return f'<WatsonCaption text="{self.text[:100]}... ">'
 
     # convert to srt-like format
@@ -126,3 +125,44 @@ class WatsonCaption:
     #         sections.append(s)
     #     return sections
     # (current) method 2. divide result in fixed intervals:
+
+
+class YoutubeApiCaption:
+    # YoutubeApiCaption class (for python transcription api module)
+    def __init__(self, caption):
+        self.caption = caption
+        self.sectionlist = self.format_sections()
+        self.text = self.compile_sections()
+
+    def __str__(self):
+        # print and preview caption
+        return f'<YoutubeApiCaption text="{self.text[:100]}... ">'
+
+    def format_sections(self):
+        # function to convert list of preformatted text in the format {"time": {time}, "subtitle": {subtitle}}
+        sections = []
+
+        # Divide caption into sections (each sections is 4 lines each: 1. section number, 2. timestamps, 3. text, 4. newline)
+        for index, section in enumerate(self.caption, start=1):
+            # create new item in subtitle
+            sections.append({
+                "section": str(index),
+                "time": self.format_time(section['start'], section['duration']),
+                "subtitle": section['text']
+            })
+        return sections
+
+    def compile_sections(self):
+        text = " ".join([section["subtitle"] for section in self.sectionlist])
+        return text
+
+    def list_sections(self):
+        return self.sectionlist
+
+    def full_text(self):
+        return self.text
+
+    @classmethod
+    def format_time(cls, start, duration):
+        """return starttime:endtime in seconds from original format with start time and duration'"""
+        return f'{start}:{start+duration}'
