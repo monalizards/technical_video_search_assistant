@@ -7,8 +7,10 @@ import { SearchResultButton } from "./SearchResultButton";
 const capitalizeFirstLetter = (string) => {
   return `${string[0].toUpperCase()}${string.substring(1)}`;
 };
-const styleSearchResponseHeader = (query, correction) => {
-  if (correction !== null) {
+const styleSearchResponseHeader = (query, correction, results) => {
+  if (results.length === 0) {
+    return `No results found.`;
+  } else if (correction !== null) {
     return `No results found, showing results for: ${correction}`;
   }
   return `Showing matches for: ${query}`;
@@ -30,7 +32,11 @@ const styleSearchResponse = (query, result, playerRef) => {
     });
   };
 
-  const header = styleSearchResponseHeader(query, result.correction);
+  const header = styleSearchResponseHeader(
+    query,
+    result.correction,
+    result.results
+  );
   return (
     <>
       <div className="search-header">{header}</div>

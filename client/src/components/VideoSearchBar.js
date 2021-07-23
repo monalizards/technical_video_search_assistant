@@ -25,12 +25,13 @@ const VideoSearchBar = () => {
 
   //   fetch video and caption from server
   const onURLSubmit = (e) => {
+    // clear screen
     setError("");
     setLoading(true);
+    clearHistory();
+    setVideo(null);
     e.preventDefault();
     if (url) {
-      clearHistory();
-      setVideo(null);
       server
         .post("", {
           url,
@@ -50,6 +51,8 @@ const VideoSearchBar = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   };
 
