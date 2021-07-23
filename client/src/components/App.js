@@ -76,7 +76,9 @@ export default function App() {
         <nav>
           <AppBar position="static" className={classes.bottomMargin}>
             <Toolbar variant="dense">
-              <FastForward fontSize="large" />
+              <Link href="/" color="inherit">
+                <FastForward fontSize="large" />
+              </Link>
               <Typography variant="h4" className={classes.navHeader}>
                 Technical Video Search Assistant
               </Typography>

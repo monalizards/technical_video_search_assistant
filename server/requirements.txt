@@ -9,3 +9,5 @@ ibm-watson
 ibm-cloud-sdk-core
 moviepy
 pytube
+youtube-transcript-api
+youtube-dl
