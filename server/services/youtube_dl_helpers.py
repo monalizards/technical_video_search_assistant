@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from moviepy.editor import AudioFileClip
 
 from caption_classes import YoutubeApiCaption
-from caption_helpers import video_to_audio, setup_watson, stt
 
 # from services.caption_classes import YoutubeApiCaption
 

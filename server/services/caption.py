@@ -1,12 +1,12 @@
 import json
-
 # from pytube import YouTube
 # from services.youtube_transcript_api_helpers import find_lang_caption
-# from services.caption_helpers import *
+
 from caption_classes import *
+from caption_helpers import video_to_audio, setup_watson, stt, format_watson_caption
 from video_info import get_video_info
-# from services.caption_classes import *
-from youtube_dl_helpers import get_caption_json, format_caption
+from youtube_dl_helpers import get_caption_json, format_caption, delete_file, get_video_base, get_video_file_name
+
 
 # Transcription pipeline
 """
@@ -58,11 +58,42 @@ from youtube_dl_helpers import get_caption_json, format_caption
 #         return {'status': 400, 'message': f'Unable to generate captions. {e}'}
 
 
+def fetch_caption(caption_url):
+    """
+    fetch caption from caption url, return the formatted caption model
+    """
+    caption = get_caption_json(caption_url)
+    caption = format_caption(caption)
+    return {'status': 200, 'caption': caption}
+
+
+def generate_caption(url):
+    """
+    generate caption from video url: download video file, convert video to audio, set up watson api, get speech to text results, delete audiofile
+    return the formatted caption model
+    """
+    # download video
+    video_base = get_video_base(url, False)
+    video_file = get_video_file_name(video_base)
+    # convert video to audio
+    audio_file = video_to_audio(video_file)
+    try:
+        # set up watson
+        sttmodel = setup_watson()
+        # generate caption with Speech to Text API
+        stt_results = stt(audio_file, sttmodel)
+        caption = format_watson_caption(stt_results)
+        delete_file(audio_file)
+        return {'status': 200, 'caption': caption}
+    except Exception as e:
+        delete_file(audio_file)
+        return None
+
+
 def pipeline(url):
     """pipeline for getting captions for the video"""
 
     video_info = get_video_info(url)
-    print(video_info)
 
     # return error if no video info is found
     if 'videoInfo' not in video_info:
@@ -70,12 +101,10 @@ def pipeline(url):
 
     caption_url = video_info['videoInfo']['caption_url']
 
-    if caption_url:
+    if caption_url != None:
         # fetch caption from youtube if available
         try:
-            caption = get_caption_json(caption_url)
-            caption = format_caption(caption)
-            return {'status': 200, 'caption': caption}
+            return fetch_caption(caption_url)
         except Exception as e:
             print(e)
             print("Attemping to generate transcript from Watson")
@@ -83,12 +112,16 @@ def pipeline(url):
     else:
         # generate caption from watson if needed
         try:
-            # print('1')
-            # pass
-            print('no caption for video? :( ', url)
+            return generate_caption(url)
         except Exception as e:
+            print(e)
             return {'status': 400, 'message': 'Failed to fetch and generate transcript'}
 
 
 if __name__ == "__main__":
+    print("testing generation of caption with watson")
+    from datetime import datetime
+    start = datetime.now()
     print(pipeline("https://www.youtube.com/watch?v=dsTXcSeAZq8"))
+    end = datetime.now()
+    print('Time taken:', end - start)

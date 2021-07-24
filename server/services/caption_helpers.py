@@ -1,6 +1,10 @@
 import os
+from caption_classes import WatsonCaption
 from pytube import YouTube, Caption
 import youtube_dl
+from ibm_watson import SpeechToTextV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+
 
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
@@ -8,7 +12,7 @@ import youtube_dl
 # from pytube import YouTube, Caption
 # from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
 # from services.caption_classes import *
-from moviepy.audio import AudioClip
+from moviepy.editor import AudioFileClip
 
 """
 First section relies on Pytube which is currently unavailable.
@@ -80,7 +84,7 @@ def find_en_caption(yt):
 #     path = yt.streams.first().download(
 #         output_path=f"download/{videoId}", filename=f"{videoId}")
 
-#     audioclip = AudioClip(path)
+#     audioclip = AudioFileClip(path)
 #     audio_filename = f"download/{videoId}/{videoId}.mp3"
 #     audioclip.write_audiofile(audio_filename)
 #     # remove video file
@@ -106,19 +110,15 @@ def setup_watson():
     """
     run watson api setup
     """
-    if 'speech_to_text' in dir():
-        return speech_to_text
-    else:
-        from ibm_watson import SpeechToTextV1
-        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
-        apikey = 'PvFDc759NRCbfBhRgKlqi87QsDl7kpNvQYkJZTaEfGCA'
-        url = 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/33ecdf1d-e4a5-4521-83e6-d3c3c574d9b0'
+    apikey = 'PvFDc759NRCbfBhRgKlqi87QsDl7kpNvQYkJZTaEfGCA'
+    url = 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/33ecdf1d-e4a5-4521-83e6-d3c3c574d9b0'
 
-        # authentication
-        authenticator = IAMAuthenticator(apikey)
-        speech_to_text = SpeechToTextV1(authenticator=authenticator)
-        speech_to_text.set_service_url(url)
+    # authentication
+    authenticator = IAMAuthenticator(apikey)
+    speech_to_text = SpeechToTextV1(authenticator=authenticator)
+    speech_to_text.set_service_url(url)
+    print('Watson API model ready')
     return speech_to_text
 
 
@@ -136,6 +136,10 @@ def stt(file, sttmodel):
     return result
 
 
+def format_watson_caption(stt_results):
+    return WatsonCaption(stt_results)
+
+
 """
 General methods:
 """
@@ -149,7 +153,7 @@ def video_to_audio(video_file):
         print("Video not found")
         return None
 
-    audioclip = AudioClip(video_file)
+    audioclip = AudioFileClip(video_file)
     audio_filename = video_file.replace('.mp4', '.mp3')
 
     audioclip.write_audiofile(audio_filename)
