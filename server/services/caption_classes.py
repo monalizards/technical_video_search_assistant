@@ -128,7 +128,7 @@ class WatsonCaption:
 
 
 class YoutubeApiCaption:
-    # YoutubeApiCaption class (for python transcription api module)
+    # YoutubeApiCaption class (for youtube_transcription_api and youtube_dl)
     def __init__(self, caption):
         self.caption = caption
         self.sectionlist = self.format_sections()
@@ -139,14 +139,13 @@ class YoutubeApiCaption:
         return f'<YoutubeApiCaption text="{self.text[:100]}... ">'
 
     def format_sections(self):
-        # function to convert list of preformatted text in the format {"time": {time}, "subtitle": {subtitle}}
         sections = []
 
-        # Divide caption into sections (each sections is 4 lines each: 1. section number, 2. timestamps, 3. text, 4. newline)
         for index, section in enumerate(self.caption, start=1):
             # create new item in subtitle
             sections.append({
                 "section": str(index),
+                "start": section['start'],
                 "time": self.format_time(section['start'], section['duration']),
                 "subtitle": section['text']
             })
