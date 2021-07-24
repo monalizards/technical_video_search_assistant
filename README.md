@@ -22,7 +22,7 @@
 - python fastAPI for:
   - fetching video information from Youtube
   - fetching caption from Youtube videos
-  - generate transcript using Watson speech-to-text API
+  - generating transcript using Watson speech-to-text API
   - searching for keywords
   - question and answering system using BERT
 - Libraries used:
@@ -38,6 +38,10 @@
   - pyspellchecker
   - torch
   - transformers[torch]
+  - youtube-dl
+  - youtube_transcript_api
+  - beautifulsoup4
+  - lxml
 
 ### Client
 

@@ -7,7 +7,15 @@ from services.caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCa
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
 
+# from pytube import YouTube, Caption
+# from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
+from services.caption_classes import *
+from moviepy import AudioFileClip
 
+"""
+First section relies on Pytube which is currently unavailable.
+Switching to youtube_dl: see youtube_dl_helpers
+"""
 def yt_find_id(yt):
     """
     return videoID for a given Pytube's Youtube object
@@ -37,9 +45,11 @@ def yt_find_length(yt):
     """
     return video length for a given Pytube's Youtube object
     """
-    # TODO: fix find length
-    # return yt.length
-    pass
+    try:
+        length = yt.length
+        return length
+    except
+        return None
 
 
 def yt_info_summary(yt):
@@ -54,31 +64,50 @@ def yt_info_summary(yt):
 def find_en_caption(yt):
     """
     returns English caption for a given Pytube's Youtube object
+    Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
+    Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
+    Search for the first 2 characters in the language code or auto-generated caption
     """
     for c in yt.caption_tracks:
-        if c.code[:2] == "en" or c.code == "a.en":
+        if c.code == "a.en" or c.code[:2] == "en":
             return c
     return None
 
+
+
 # Download and extract audio
+# def download_audio(yt):
+#     videoId = yt_find_id(yt)
+#     path = yt.streams.first().download(
+#         output_path=f"download/{videoId}", filename=f"{videoId}")
+
+#     audioclip = AudioFileClip(path)
+#     audio_filename = f"download/{videoId}/{videoId}.mp3"
+#     audioclip.write_audiofile(audio_filename)
+#     # remove video file
+#     os.remove(path)
+#     return audio_filename
+
+# def generate_watson_caption(yt):
+#     speech_to_text = setup_watson()
+#     audio_filename = download_audio(yt)
+#     speech_recognition_result = stt(audio_filename, speech_to_text)
+#     # remove folder from download
+#     videoId = yt_find_id(yt)
+#     os.remove(audio_filename)
+#     os.rmdir(f"download/{videoId}")
+#     return speech_recognition_result
 
 
-def download_audio(yt):
-    if 'AudioFileClip' not in dir():
-        from moviepy.editor import AudioFileClip
-    videoId = yt_find_id(yt)
-    path = yt.streams.first().download(
-        output_path=f"download/{videoId}", filename=f"{videoId}")
-
-    audioclip = AudioFileClip(path)
-    audio_filename = f"download/{videoId}/{videoId}.mp3"
-    audioclip.write_audiofile(audio_filename)
-    # remove video file
-    os.remove(path)
-    return audio_filename
+"""
+Watson API
+"""
 
 
 def setup_watson():
+    """
+    run watson api setup
+    """
     if 'speech_to_text' in dir():
         return speech_to_text
     else:
@@ -96,6 +125,9 @@ def setup_watson():
 
 
 def stt(file, sttmodel):
+    """
+    Get results from speech-to-text API 
+    """
     with open(file, 'rb') as audio_file:
         result = sttmodel.recognize(
             audio=audio_file,
@@ -106,12 +138,25 @@ def stt(file, sttmodel):
     return result
 
 
-def generate_watson_caption(yt):
-    speech_to_text = setup_watson()
-    audio_filename = download_audio(yt)
-    speech_recognition_result = stt(audio_filename, speech_to_text)
-    # remove folder from download
-    videoId = yt_find_id(yt)
-    os.remove(audio_filename)
-    os.rmdir(f"download/{videoId}")
-    return speech_recognition_result
+"""
+General methods:
+"""
+
+
+def video_to_audio(video_file):
+    """
+    converts a .mp4 file to .mp3 file
+    """
+    if not os.path.exists(video_file):
+        print("Video not found")
+        return None
+
+    audioclip = AudioFileClip(video_file)
+    audio_filename = video_file.replace('.mp4', '.mp3')
+
+    audioclip.write_audiofile(audio_filename)
+
+    # remove video file
+    os.remove(video_file)
+
+    return audio_filename
