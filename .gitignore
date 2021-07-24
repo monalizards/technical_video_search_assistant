@@ -3,3 +3,9 @@
 **/tmp
 **/.env
 /misc
+**.mp4
+**.mp3
+**.mp3*
+**.mp4*
+**.info.json
+**/.vscode

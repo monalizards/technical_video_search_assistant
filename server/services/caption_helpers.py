@@ -1,9 +1,10 @@
 import os
-from caption_classes import WatsonCaption
-from pytube import YouTube, Caption
 import youtube_dl
+from pytube import YouTube, Caption
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+
+from services.caption_classes import *
 
 
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)

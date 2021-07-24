@@ -8,7 +8,7 @@ import spacy
 from spacy.lang.en import English
 from spellchecker import SpellChecker
 
-from services.caption import pipeline
+from services.caption import pipeline_pytube_transcriptapi
 import time
 import pickle
 

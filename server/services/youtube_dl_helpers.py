@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from moviepy.editor import AudioFileClip
 
-from caption_classes import YoutubeApiCaption
+from services.caption_classes import YoutubeApiCaption
 
 # from services.caption_classes import YoutubeApiCaption
 
