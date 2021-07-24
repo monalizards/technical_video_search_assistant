@@ -1,21 +1,21 @@
 import os
 from pytube import YouTube, Caption
 import youtube_dl
-# from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
-from services.caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
 
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
 
 # from pytube import YouTube, Caption
 # from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
-from services.caption_classes import *
-from moviepy import AudioFileClip
+# from services.caption_classes import *
+from moviepy.audio import AudioClip
 
 """
 First section relies on Pytube which is currently unavailable.
 Switching to youtube_dl: see youtube_dl_helpers
 """
+
+
 def yt_find_id(yt):
     """
     return videoID for a given Pytube's Youtube object
@@ -48,7 +48,7 @@ def yt_find_length(yt):
     try:
         length = yt.length
         return length
-    except
+    except:
         return None
 
 
@@ -74,14 +74,13 @@ def find_en_caption(yt):
     return None
 
 
-
 # Download and extract audio
 # def download_audio(yt):
 #     videoId = yt_find_id(yt)
 #     path = yt.streams.first().download(
 #         output_path=f"download/{videoId}", filename=f"{videoId}")
 
-#     audioclip = AudioFileClip(path)
+#     audioclip = AudioClip(path)
 #     audio_filename = f"download/{videoId}/{videoId}.mp3"
 #     audioclip.write_audiofile(audio_filename)
 #     # remove video file
@@ -97,7 +96,6 @@ def find_en_caption(yt):
 #     os.remove(audio_filename)
 #     os.rmdir(f"download/{videoId}")
 #     return speech_recognition_result
-
 
 """
 Watson API
@@ -151,7 +149,7 @@ def video_to_audio(video_file):
         print("Video not found")
         return None
 
-    audioclip = AudioFileClip(video_file)
+    audioclip = AudioClip(video_file)
     audio_filename = video_file.replace('.mp4', '.mp3')
 
     audioclip.write_audiofile(audio_filename)

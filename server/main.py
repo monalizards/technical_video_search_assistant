@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
 
 from services.caption import pipeline
+from services.video_info import get_video_info
 from services.search import search_caption
 from services.bertQA import qa
 
@@ -46,6 +47,13 @@ class QA(BaseModel):
 @app.get("/caption")
 async def read_root() -> dict:
     return {"Hello": "World"}
+
+# get video from url using post
+
+
+async def get_vid_info(url: Url) -> dict:
+    url = url.url
+    return {"url": url, "results": get_vid_info(url)}
 
 # get caption from url using post
 

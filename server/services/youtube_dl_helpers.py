@@ -70,6 +70,7 @@ def get_key_info(info_json):
         "id": info_json["id"],
         "title": info_json["title"],
         "duration": info_json["duration"],
+        "caption_url": find_caption_url(info_json)
     }
 
 
@@ -78,6 +79,9 @@ def find_caption_url(info, lang='en'):
     return url for caption in specified language with srv1 format
     return None if none found
     """
+    if not info.get('automatic_captions'):
+        return None
+
     if lang in info['automatic_captions']:
         for index, caption in enumerate(info['automatic_captions'][lang]):
             if caption['ext'] == 'srv1':

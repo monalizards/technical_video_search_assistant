@@ -56,7 +56,7 @@ def test_get_key_info():
     """
     get_key_file test 1/1: check if key info contains correct info, with a video id, title and duration
     """
-    for field in ["id", "title", "duration"]:
+    for field in ["id", "title", "duration", "caption_url"]:
         assert field in key_info
     assert key_info["id"] == '_SW7I5SBRhs'
     assert key_info["title"] == 'Stephen Hawking discusses Baby Universes, UC Berkeley 1988'
