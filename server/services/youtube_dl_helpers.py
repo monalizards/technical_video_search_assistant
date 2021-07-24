@@ -138,13 +138,14 @@ def move_files(video_base):
     path = get_tmp_path_name()
     if not os.path.isdir('tmp'):
         os.mkdir('tmp')
-    related_files = [f for f in os.listdir(
-    ) if video_base in f and os.path.isfile(f)]
-    for f in related_files:
-        try:
-            os.rename(f, os.path.join(path, f))
-        except Exception as e:
-            print(e)
+    formats = ['.info.json', '.mp4', 'mp3']
+    related_files = [f'{video_base}{format}' for format in formats]
+    for file in related_files:
+        if os.path.exists(file):
+            try:
+                os.rename(file, os.path.join(path, file))
+            except Exception as e:
+                print(e)
 
 
 if __name__ == "__main__":

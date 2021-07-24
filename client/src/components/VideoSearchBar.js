@@ -23,34 +23,71 @@ const VideoSearchBar = () => {
   const { setVideo } = useVideo();
   const { clearHistory } = useHistory();
 
-  //   fetch video and caption from server
-  const onURLSubmit = (e) => {
+  // //   fetch video and caption from server
+  // const onURLSubmit = (e) => {
+  //   // clear screen
+  //   setError("");
+  //   setLoading(true);
+  //   clearHistory();
+  //   setVideo(null);
+  //   e.preventDefault();
+  //   if (url) {
+  //     server
+  //       .post("", {
+  //         url,
+  //       })
+  //       .then((res) => {
+  //         const { results } = res.data;
+  //         if (results.status === 200) {
+  //           setVideo({ ...results, playedSeconds: 0 });
+  //         } else if (results.status === 400) {
+  //           setError(results.message);
+  //           setVideo(null);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         setError(err.message);
+  //       })
+  //       .finally(() => {
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const clear_screen = () => {
     // clear screen
     setError("");
     setLoading(true);
     clearHistory();
     setVideo(null);
+  };
+
+  const get_vid_info = (url) => {
+    server
+      .post("vidinfo", { url })
+      .then(({ data }) => {
+        const { results } = data;
+        if (results.status === 400) {
+          setError(results.message);
+        } else {
+          setVideo({ url, ...results.videoInfo, playedSeconds: 0 });
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+        setVideo(null);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  // fetch video info from server
+  const onURLSubmit = (e) => {
+    clear_screen();
     e.preventDefault();
     if (url) {
-      server
-        .post("", {
-          url,
-        })
-        .then((res) => {
-          const { results } = res.data;
-          if (results.status === 200) {
-            setVideo({ ...results, playedSeconds: 0 });
-          } else if (results.status === 400) {
-            setError(results.message);
-            setVideo(null);
-          }
-        })
-        .catch((err) => {
-          setError(err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      get_vid_info(url);
     } else {
       setLoading(false);
     }

@@ -47,7 +47,7 @@ async def read_root() -> dict:
     return {"Hello": "World"}
 
 
-@app.get("/caption/vidinfo")
+@app.post("/caption/vidinfo")
 async def get_vid_info(url: Url) -> dict:
     # get video from url using post
     url = url.url

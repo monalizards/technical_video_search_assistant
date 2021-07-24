@@ -52,7 +52,8 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
 
   useEffect(() => {
     videoStop();
-  }, [video.videoId]);
+  }, [video.id]);
+  // }, [video.videoId]);
 
   return (
     <div
@@ -74,14 +75,20 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
             ref={playerRef}
             className="react-player"
             controls={true}
-            onReady={onVideoLoad}
+            onReady={() => {
+              if (tableRef.current) {
+                onVideoLoad();
+              }
+            }}
             onPlay={videoPlay}
             onPause={videoStop}
             onEnded={videoStop}
             onError={videoStop}
             onProgress={({ playedSeconds }) => {
               updatePlayedSeconds(playedSeconds);
-              tableRef.current.scrollToSeconds(playedSeconds);
+              if (tableRef.current) {
+                tableRef.current.scrollToSeconds(playedSeconds);
+              }
             }}
             width="100%"
             height="100%"
@@ -89,7 +96,8 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
               maxWidth: 640,
               maxHeight: 360,
             }}
-            url={`https://www.youtube.com/watch?v=${video.videoId}`}
+            url={`https://www.youtube.com/watch?v=${video.id}`}
+            // url={`https://www.youtube.com/watch?v=${video.videoId}`}
             playing={playing}
           />
         </div>
