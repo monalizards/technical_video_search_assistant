@@ -112,7 +112,8 @@ def pipeline_youtubedl(url):
     if caption_url != None:
         # fetch caption from youtube if available
         try:
-            return fetch_caption(caption_url)
+            caption = fetch_caption(caption_url)
+            return {'status': 200, 'caption': caption.list_sections()}
         except Exception as e:
             print(e)
             print("Attemping to generate transcript from Watson")
@@ -120,7 +121,8 @@ def pipeline_youtubedl(url):
     else:
         # generate caption from watson if needed
         try:
-            return generate_caption(url)
+            caption = generate_caption(url)
+            return {'status': 200, 'caption': caption.list_sections()}
         except Exception as e:
             print(e)
             return {'status': 400, 'message': 'Failed to fetch and generate transcript'}

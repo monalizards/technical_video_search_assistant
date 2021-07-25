@@ -1,8 +1,8 @@
+# load BERT model
 from transformers import BertTokenizer, BertForQuestionAnswering
 from transformers import LongformerTokenizer, LongformerForQuestionAnswering
 import torch
-
-# load BERT model
+import json
 
 
 def qa_short(question, text):
@@ -59,7 +59,16 @@ def qa_long(question, text):
 def qa(question, text):
     """
     return an answer to a question using text as a reference
+    accept text, or a JSON with list of caption sections
     """
+    try:
+        # try to load json file
+        text = json.loads(text)
+        text = text.join(' ')
+    except:
+        # use text as normal
+        pass
+    
     tokenizer = BertTokenizer.from_pretrained(
         'deepset/bert-large-uncased-whole-word-masking-squad2')
 
