@@ -3,10 +3,10 @@ import "./App.css";
 import { VideoProvider } from "./VideoContext";
 import { HistoryProvider } from "./HistoryContext";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline, Container } from "@material-ui/core";
 
 import Navbar from "./Navbar";
-// import VideoSearchBar from "./VideoSearchBar";
+import VideoSearchBar from "./VideoSearchBar";
 // import VideoShow from "./VideoShow";
 
 // Material UI theme styling
@@ -40,20 +40,20 @@ export default function App() {
         {/* Navbar */}
         <Navbar />
         {/* Main content */}
-        {/* <main> */}
-        {/* 1. Video Search Bar */}
-        {/* <VideoProvider>
-            <HistoryProvider>
+        <VideoProvider>
+          <HistoryProvider>
+            <main>
+              {/* 1. Video Search Bar */}
               <Container>
                 <div className="margin-bottom-sm">
                   <VideoSearchBar />
-                </div> */}
-        {/* 2. All video-related things */}
-        {/* <VideoShow />
+                </div>
+                {/* 2. All video-related things */}
+                {/* <VideoShow /> */}
               </Container>
-            </HistoryProvider>
-          </VideoProvider>
-        </main> */}
+            </main>
+          </HistoryProvider>
+        </VideoProvider>
       </ThemeProvider>
     </div>
   );
