@@ -4,16 +4,13 @@ const VideoContext = createContext();
 
 export const VideoProvider = ({ children }) => {
   const [video, setVideo] = useState(null);
-  const [playedSeconds, setPlayedSeconds] = useState(0);
 
-  const updatePlayedSeconds = (seconds) => {
-    setPlayedSeconds(seconds);
+  const updatePlayedSeconds = (playedSeconds) => {
+    setVideo({ ...video, playedSeconds });
   };
 
   return (
-    <VideoContext.Provider
-      value={{ video, setVideo, playedSeconds, updatePlayedSeconds }}
-    >
+    <VideoContext.Provider value={{ video, setVideo, updatePlayedSeconds }}>
       {children}
     </VideoContext.Provider>
   );
