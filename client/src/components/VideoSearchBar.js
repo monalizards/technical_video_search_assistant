@@ -20,7 +20,7 @@ const VideoSearchBar = () => {
   // show error
   const [error, setError] = useState("");
   // use video and history context
-  const { setVideo, setPlayedSeconds } = useVideo();
+  const { setVideo, setPlayedSeconds, setCaptions } = useVideo();
   const { clearHistory } = useHistory();
 
   const clear_screen = () => {
@@ -28,6 +28,8 @@ const VideoSearchBar = () => {
     setError("");
     clearHistory();
     setVideo(null);
+    setPlayedSeconds(0);
+    setCaptions([]);
   };
 
   const get_vid_info = (url) => {
@@ -41,7 +43,6 @@ const VideoSearchBar = () => {
           );
         } else {
           setVideo({ url, ...results.videoInfo });
-          setPlayedSeconds(0);
         }
       })
       .catch(({ response }) => {
