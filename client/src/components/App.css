@@ -2,11 +2,6 @@
   padding: 6px 1em;
 }
 
-/* prevent icon from shifting up */
-svg {
-  display: block !important;
-}
-
 .margin-bottom-sm {
   margin-bottom: 4px;
 }

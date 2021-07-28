@@ -29,6 +29,18 @@ const theme = createTheme({
     },
     fontFamily: ["Roboto Condensed", "sans-serif"].join(","),
   },
+  overrides: {
+    MuiFormHelperText: {
+      root: {
+        fontSize: "0.9em",
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        display: "block",
+      },
+    },
+  },
 });
 
 export default function App() {
