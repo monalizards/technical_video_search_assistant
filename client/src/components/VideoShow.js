@@ -6,9 +6,7 @@ import { useVideo } from "./VideoContext";
 import { Typography } from "@material-ui/core";
 
 import VideoPlayer from "./VideoPlayer";
-
-// import TranscriptTable from "./TranscriptTable";
-// import InVideoSearch from "./InVideoSearch";
+import Caption from "./Caption";
 
 const VideoShow = () => {
   const { video } = useVideo();
@@ -19,16 +17,9 @@ const VideoShow = () => {
   if (video) {
     return (
       <div>
-        <Typography variant="h5">{video.videoTitle}</Typography>
+        <Typography variant="h5">{video.title}</Typography>
         <VideoPlayer ref={playerRef} tableRef={tableRef} />
-        <div className="flex-container">
-          <div className="table">
-            {/* <TranscriptTable ref={tableRef} playerRef={playerRef} /> */}
-          </div>
-          <div className="history">
-            {/* <InVideoSearch playerRef={playerRef} /> */}
-          </div>
-        </div>
+        <Caption tableRef={tableRef} playerRef={playerRef} />
       </div>
     );
   }
