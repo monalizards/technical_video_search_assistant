@@ -56,10 +56,10 @@ const VideoSearchBar = () => {
 
   // fetch video info from server
   const onURLSubmit = (e) => {
-    clear_screen();
     setLoading(true);
     e.preventDefault();
     if (url) {
+      clear_screen();
       get_vid_info(url);
     } else {
       setLoading(false);

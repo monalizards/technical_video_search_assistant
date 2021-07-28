@@ -7,7 +7,7 @@ import { CssBaseline, Container } from "@material-ui/core";
 
 import Navbar from "./Navbar";
 import VideoSearchBar from "./VideoSearchBar";
-// import VideoShow from "./VideoShow";
+import VideoShow from "./VideoShow";
 
 // Material UI theme styling
 
@@ -61,7 +61,7 @@ export default function App() {
                   <VideoSearchBar />
                 </div>
                 {/* 2. All video-related things */}
-                {/* <VideoShow /> */}
+                <VideoShow />
               </Container>
             </main>
           </HistoryProvider>
