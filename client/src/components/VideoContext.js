@@ -3,6 +3,7 @@ import { createContext, useState, useContext } from "react";
 const VideoContext = createContext();
 
 export const VideoProvider = ({ children }) => {
+  const [url, setUrl] = useState("");
   const [video, setVideo] = useState(null);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [captions, setCaptions] = useState([]);
@@ -10,6 +11,8 @@ export const VideoProvider = ({ children }) => {
   return (
     <VideoContext.Provider
       value={{
+        url,
+        setUrl,
         video,
         setVideo,
         playedSeconds,

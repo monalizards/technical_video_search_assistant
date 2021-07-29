@@ -31,7 +31,7 @@ const VideoShow = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: "4em",
+        // gap: "4em",
       }}
     >
       <Typography variant="body1">Nothing here yet.</Typography>

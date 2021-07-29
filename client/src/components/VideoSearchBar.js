@@ -14,13 +14,13 @@ const override = css`
 
 const VideoSearchBar = () => {
   // initiate URL state
-  const [url, setUrl] = useState("");
+  const [searchUrl, setSearchUrl] = useState("");
   // Load spinner
   const [loading, setLoading] = useState(false);
   // show error
   const [error, setError] = useState("");
   // use video and history context
-  const { setVideo, setPlayedSeconds, setCaptions } = useVideo();
+  const { url, setUrl, setVideo, setPlayedSeconds, setCaptions } = useVideo();
   const { clearHistory } = useHistory();
 
   const clear_screen = () => {
@@ -39,15 +39,15 @@ const VideoSearchBar = () => {
         const { results } = data;
         if (results.status === 400) {
           setError(
-            `${results.message}, please make sure you've entered the complete URL to a YouTube video.`
+            "Video unavailable, please make sure you've entered the complete URL to a YouTube video."
           );
         } else {
           setVideo({ url, ...results.videoInfo });
         }
       })
-      .catch(({ response }) => {
+      .catch((err) => {
         setError(
-          `${response.statusText}, please make sure you've entered a URL.`
+          "Please make sure you've entered a URL. Server may be currently unavilable"
         );
         setVideo(null);
       })
@@ -58,9 +58,11 @@ const VideoSearchBar = () => {
   const onURLSubmit = (e) => {
     setLoading(true);
     e.preventDefault();
-    if (url) {
+    // search only if searchUrl is different from url of video in previous state
+    if (searchUrl !== url) {
       clear_screen();
-      get_vid_info(url);
+      setUrl(searchUrl);
+      get_vid_info(searchUrl);
     } else {
       setLoading(false);
     }
@@ -77,8 +79,8 @@ const VideoSearchBar = () => {
           fullWidth
           size="small"
           placeholder="Youtube Video URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          value={searchUrl}
+          onChange={(e) => setSearchUrl(e.target.value)}
           disabled={loading}
           className="input-no-padding"
         />

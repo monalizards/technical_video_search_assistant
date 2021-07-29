@@ -9,8 +9,6 @@ from moviepy.editor import AudioFileClip
 
 from services.caption_classes import YoutubeApiCaption
 
-# from services.caption_classes import YoutubeApiCaption
-
 # Ref: https://github.com/ytdl-org/
 
 
@@ -37,7 +35,7 @@ def get_video_base(url, skip_download=True):
 
         output = new_stdout.getvalue()
         sys.stdout = old_stdout
-        video_base = output.strip('.mp4\n')
+        video_base = output.replace('.mp4\n', '')
 
         # move all related files to temp folder
         move_files(video_base)

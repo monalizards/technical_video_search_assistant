@@ -24,7 +24,7 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
 
   const videoPlaySeconds = (seconds) => {
     videoStop();
-    tableRef.current.scrollToSeconds(seconds);
+    playerRef.current.player.seekTo(seconds, "seconds");
 
     // Solve seekto when video isn't loaded
     if (playerRef.current.getSecondsLoaded() === 0) {
@@ -33,9 +33,10 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
         500
       );
     }
-
-    playerRef.current.player.seekTo(seconds, "seconds");
     videoPlay();
+    if (tableRef.current) {
+      tableRef.current.scrollToSeconds(seconds);
+    }
   };
 
   const getCurrentTime = () => {

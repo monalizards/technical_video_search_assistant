@@ -10,9 +10,6 @@ from services.caption_classes import *
 # Original method a.en: English (auto-generated), en: English (US), en-GB: English (UK)
 # Failed case: <Caption lang="English - jamake" code="en.FmoQciUtYSc"> (https://en.jamake.io/)
 
-# from pytube import YouTube, Caption
-# from caption_classes import YoutubeCaption, WatsonCaption, YoutubeApiCaption
-# from services.caption_classes import *
 from moviepy.editor import AudioFileClip
 
 """
