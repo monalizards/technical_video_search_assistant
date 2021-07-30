@@ -39,7 +39,11 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
           {prefix} {time}
         </small>
       </div>
-      <div>prefix{result.match}suffix</div>
+      <div>
+        {/* TODO: match prefix */}
+        <strong>{result.match}</strong>
+        {/* TODO: match suffix */}
+      </div>
     </div>
   );
 };

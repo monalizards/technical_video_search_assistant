@@ -131,18 +131,11 @@ def word_matching(word, text):
 
 
 def match_word(word, text):
-    matches = word_matching(word, text)
-    results = {'matches': []}
     # check for misspelled query word if no results are found
-    if matches == []:
-        # load spell checker
-        spell = spellchecker_load(text)
-        correction = spell.correction(word)
-        if correction != word:
-            results = {'correction': correction,
-                       'matches': word_matching(correction, text)}
-    else:
-        results = {'matches': matches}
+    # load spell checker
+    spell = spellchecker_load(text)
+    correction = spell.correction(word)
+    results = {'correction': None if correction == word else correction, 'matches': word_matching(correction, text)}
     return results
 
 # return (unique) phases marches in text
@@ -195,12 +188,16 @@ def search_caption(query, captions):
 
     results = []
     for match in matches["matches"]:
+        # TODO: find prefix and suffix for match
         results.extend(format_match(match, text, captions))
 
+    results = sort_results_by_section(results)
     res = {'status': 200, 'correction': matches.get(
         'correction', None), 'results': results}
     return res
 
+def sort_results_by_section(results):
+    return sorted(results, key=lambda result: result["section"])
 
 if __name__ == "__main__":
     # # example (Angular video)

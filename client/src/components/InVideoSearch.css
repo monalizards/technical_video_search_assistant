@@ -32,3 +32,12 @@
 .card-actions {
   padding: 0 20px 12px 20px;
 }
+
+.form-group {
+  position: relative;
+  z-index: 0;
+}
+
+.progress {
+  margin: 0.4em;
+}

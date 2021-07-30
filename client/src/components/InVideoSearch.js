@@ -7,7 +7,9 @@ import {
   Switch,
   TextField,
   Typography,
+  Box,
 } from "@material-ui/core";
+import PropTypes from "prop-types";
 import server from "../apis/server";
 import "./InVideoSearch.css";
 import { useVideo } from "./VideoContext";
@@ -17,6 +19,42 @@ import SearchLog from "./SearchLog";
 const searchTypes = {
   search: "search",
   qa: "qa",
+};
+
+// ref: https://material-ui.com/components/progress/
+function CircularProgressWithLabel(props) {
+  return (
+    <Box
+      position="relative"
+      display={props.value === 0 ? "none" : "inline-flex"}
+    >
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="textSecondary"
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+CircularProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate variant.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
 };
 
 const InVideoSearch = ({ playerRef }) => {
@@ -132,12 +170,14 @@ const InVideoSearch = ({ playerRef }) => {
                     />
                   </Grid>
                   <Grid item>Q.A.</Grid>
-                  <CircularProgress
-                    color="secondary"
-                    size="1em"
-                    variant="determinate"
-                    value={loading ? 25 : 0}
-                  />
+                  <div className="progress">
+                    <CircularProgressWithLabel
+                      color="secondary"
+                      size="2em"
+                      variant="determinate"
+                      value={loading ? 100 : 0}
+                    />
+                  </div>
                 </Grid>
               </Typography>
               <TextField
