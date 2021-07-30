@@ -58,7 +58,7 @@ CircularProgressWithLabel.propTypes = {
 };
 
 const InVideoSearch = ({ playerRef }) => {
-  const { captions } = useVideo();
+  const { captions, video } = useVideo();
   const { addHistory } = useHistory();
   const [request, setRequest] = useState({
     type: searchTypes.search,
@@ -81,7 +81,12 @@ const InVideoSearch = ({ playerRef }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  const setTimer = () => {
+    const timerId = setInterval(() => setTimeElapsed((time) => time + 1), 1000);
+    return timerId;
+  };
 
   // handle form changes
   const onSwitchChange = (e) => {
@@ -94,6 +99,13 @@ const InVideoSearch = ({ playerRef }) => {
     });
   };
 
+  // calculate progress
+  const calculateProgress = (time) => {
+    const duration = video.duration;
+    const progress = (time / ((duration / 60) * 10)) * 100;
+    return progress > 100 ? 99 : progress;
+  };
+
   const onInputChange = (e) => {
     setRequest({
       ...request,
@@ -104,7 +116,7 @@ const InVideoSearch = ({ playerRef }) => {
   // handle form submission
   const onFormSubmit = (e) => {
     setError("");
-    setProgress("");
+    setTimeElapsed(0);
     e.preventDefault();
     if (request.content.trim() === "") {
       setError("Please enter your query");
@@ -112,15 +124,9 @@ const InVideoSearch = ({ playerRef }) => {
     }
     // console.log(request);
     const params = formatParams();
-    // console.log(params);
     setLoading(true);
-    // TODO: calculate estimated progress
-    // display progress text for qa requests
-    if (request.type === searchTypes.qa) {
-      setProgress(25);
-    } else if (request.type === searchTypes.search) {
-      setProgress(75);
-    }
+    const timerId = setTimer();
+
     server
       .post(`/${request.type}`, params)
       .then(({ data }) => {
@@ -130,7 +136,8 @@ const InVideoSearch = ({ playerRef }) => {
       .catch((e) => setError(e.message))
       .finally(() => {
         setLoading(false);
-        setProgress(0);
+        clearInterval(timerId);
+        setTimeElapsed(0);
       });
     setRequest({ ...request, content: "" });
   };
@@ -175,7 +182,7 @@ const InVideoSearch = ({ playerRef }) => {
                       color="secondary"
                       size="2em"
                       variant="determinate"
-                      value={loading ? 100 : 0}
+                      value={loading ? calculateProgress(timeElapsed) : 0}
                     />
                   </div>
                 </Grid>
