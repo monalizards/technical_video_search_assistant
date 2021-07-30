@@ -1,11 +1,12 @@
 import TranscriptTable from "./TranscriptTable";
-// import InVideoSearch from "./InVideoSearch";
+import InVideoSearch from "./InVideoSearch";
 import server from "../apis/server";
 import { useEffect, useState, useCallback } from "react";
 import { useVideo } from "./VideoContext";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
+import "./Caption.css";
 
 const useStyles = makeStyles({
   root: {
@@ -69,7 +70,7 @@ const Caption = ({ tableRef, playerRef }) => {
           <TranscriptTable ref={tableRef} playerRef={playerRef} />
         </div>
         <div className="history">
-          {/* <InVideoSearch playerRef={playerRef} /> */}
+          <InVideoSearch playerRef={playerRef} />
         </div>
       </div>
     );
@@ -84,7 +85,8 @@ const Caption = ({ tableRef, playerRef }) => {
       <div className="flex-container">
         <div className={classes.root}>
           <Typography variant="h6">
-            Loading Captions... {calculateProgress(timeElapsed).toFixed(1)}%done
+            Loading Captions... {calculateProgress(timeElapsed).toFixed(1)}%
+            done
           </Typography>
           <LinearProgress
             variant="determinate"

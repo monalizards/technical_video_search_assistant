@@ -13,12 +13,11 @@ const buttonSettings = {
 };
 
 export const SearchResultButton = ({ currentTime, result, playerRef }) => {
-  const { video } = useVideo();
-  const captionSections = JSON.parse(video.caption_sections);
+  const { captions } = useVideo();
 
   const findSectionTime = (section) => {
     //   offset for sections starting at index 1
-    const captionSection = captionSections[section - 1];
+    const captionSection = captions[section - 1];
     const startTime = parseFloat(captionSection.time.split(":")[0]);
     return startTime;
   };
@@ -40,7 +39,7 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
           {prefix} {time}
         </small>
       </div>
-      <div>{result.match}</div>
+      <div>prefix{result.match}suffix</div>
     </div>
   );
 };

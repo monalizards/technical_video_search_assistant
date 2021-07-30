@@ -55,19 +55,18 @@ def qa_long(question, text):
     answer = answer.replace('Ġ', '')
     return answer
 
+# helper function to compile caption text
+def caption_sections_to_text(sections):
+    sections = json.loads(sections)
+    text = " ".join([section['subtitle'] for section in sections])
+    return text
 
-def qa(question, text):
+
+def qa(question, captions):
     """
-    return an answer to a question using text as a reference
-    accept text, or a JSON with list of caption sections
+    return an answer to a question with a JSON with list of caption sections
     """
-    try:
-        # try to load json file
-        text = json.loads(text)
-        text = text.join(' ')
-    except:
-        # use text as normal
-        pass
+    text = caption_sections_to_text(captions)
     
     tokenizer = BertTokenizer.from_pretrained(
         'deepset/bert-large-uncased-whole-word-masking-squad2')

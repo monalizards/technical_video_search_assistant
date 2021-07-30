@@ -166,11 +166,18 @@ def format_match(match, text, sections):
         match["section"] = find_section(match["start"], sections)
     return matches
 
+# helper function to compile caption text
+def caption_sections_to_text(sections):
+    sections = json.loads(sections)
+    text = " ".join([section['subtitle'] for section in sections])
+    return text
+
 
 # main function: search pipeline
-def search_caption(query, text, sections):
+def search_caption(query, captions):
     # # Process caption and search term
     # text = caption['caption_fulltext']
+    text = caption_sections_to_text(captions)
 
     query_tokens = process_search_term(query)
     res = {}
@@ -188,7 +195,7 @@ def search_caption(query, text, sections):
 
     results = []
     for match in matches["matches"]:
-        results.extend(format_match(match, text, sections))
+        results.extend(format_match(match, text, captions))
 
     res = {'status': 200, 'correction': matches.get(
         'correction', None), 'results': results}

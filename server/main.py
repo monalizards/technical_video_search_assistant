@@ -32,14 +32,12 @@ class Url(BaseModel):
 
 class Search(BaseModel):
     query: str
-    text: str
-    sections: str
+    captions: str
 
 
 class QA(BaseModel):
     question: str
-    text: str
-
+    captions: str
 
 @app.get("/caption")
 # Test if app is working
@@ -71,12 +69,12 @@ async def get_caption(url: Url) -> dict:
 @app.post("/caption/search")
 # request a text query result
 async def caption_search(search: Search) -> dict:
-    results = search_caption(search.query, search.text, search.sections)
+    results = search_caption(search.query, search.captions)
     return {"results": results}
 
 
 @app.post("/caption/qa")
 # request a question and answer query result
 async def caption_qa(qa_query: QA) -> dict:
-    results = qa(qa_query.question, qa_query.text)
+    results = qa(qa_query.question, qa_query.captions)
     return {"status": 200, "results": results}

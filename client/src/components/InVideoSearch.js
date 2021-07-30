@@ -20,7 +20,7 @@ const searchTypes = {
 };
 
 const InVideoSearch = ({ playerRef }) => {
-  const { video } = useVideo();
+  const { captions } = useVideo();
   const { addHistory } = useHistory();
   const [request, setRequest] = useState({
     type: searchTypes.search,
@@ -31,13 +31,12 @@ const InVideoSearch = ({ playerRef }) => {
     if (request.type === searchTypes.search) {
       return {
         query: request.content,
-        text: video.caption_fulltext,
-        sections: video.caption_sections,
+        captions: JSON.stringify(captions),
       };
     } else {
       return {
         question: request.content,
-        text: video.caption_fulltext,
+        captions: JSON.stringify(captions),
       };
     }
   };
@@ -84,11 +83,11 @@ const InVideoSearch = ({ playerRef }) => {
     } else if (request.type === searchTypes.search) {
       setProgress(75);
     }
-
     server
       .post(`/${request.type}`, params)
       .then(({ data }) => {
         addHistory({ request, response: data });
+        setError("");
       })
       .catch((e) => setError(e.message))
       .finally(() => {
@@ -144,11 +143,7 @@ const InVideoSearch = ({ playerRef }) => {
               <TextField
                 disabled={loading}
                 error={error !== ""}
-                helperText={
-                  error || progress === 0
-                    ? ""
-                    : `Approximate progress: ${progress}%`
-                }
+                helperText={error}
                 variant="filled"
                 size="small"
                 value={request.content}
