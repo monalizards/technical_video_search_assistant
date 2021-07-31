@@ -25,26 +25,18 @@ const searchTypes = {
 function CircularProgressWithLabel(props) {
   return (
     <Box
-      position="relative"
-      display={props.value === 0 ? "none" : "inline-flex"}
+      alignItems="center"
+      justifyContent="center"
+      display={props.value === 0 ? "none" : "flex"}
+      style={{ gap: "0.2em" }}
     >
       <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          color="textSecondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
+
+      <Typography
+        variant="caption"
+        component="div"
+        color="textSecondary"
+      >{`${Math.round(props.value)}%`}</Typography>
     </Box>
   );
 }
@@ -180,7 +172,7 @@ const InVideoSearch = ({ playerRef }) => {
                   <div className="progress">
                     <CircularProgressWithLabel
                       color="secondary"
-                      size="2em"
+                      size="1em"
                       variant="determinate"
                       value={loading ? calculateProgress(timeElapsed) : 0}
                     />
