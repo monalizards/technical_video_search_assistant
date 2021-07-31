@@ -4,23 +4,23 @@
 }
 
 .dark {
-  --border: 1px solid rgba(255, 255, 255, 0.4);
-  --paper-highlight-color: #616161;
+  --border: 1px solid hsla(0, 0%, 100%, 0.4);
+  --paper-highlight-color: hsl(0, 0%, 40%);
   --table-hover-color: var(--paper-highlight-color);
-  --log-request-background: #3f51b5;
+  --log-request-background: hsl(230, 48%, 48%);
   --log-response-background: var(--paper-highlight-color);
-  --prefix-before-color: rgb(132, 164, 251);
-  --prefix-after-color: rgb(128, 197, 124);
+  --prefix-before-color: hsl(200, 100%, 80%);
+  --prefix-after-color: hsl(116, 100%, 80%);
 }
 
 .light {
-  --border: 1px solid rgba(0, 0, 0, 0.2);
-  --paper-highlight-color: #ddd;
+  --border: 1px solid hsla(0, 0%, 0%, 0.2);
+  --paper-highlight-color: hsl(0, 0%, 90%);
   --table-hover-color: var(--paper-highlight-color);
-  --log-request-background: rgb(162 216 255);
+  --log-request-background: hsl(180, 60%, 80%);
   --log-response-background: var(--paper-highlight-color);
-  --prefix-before-color: rgb(0, 68, 255);
-  --prefix-after-color: rgb(23, 166, 14);
+  --prefix-before-color: hsl(200, 100%, 50%);
+  --prefix-after-color: hsl(116, 100%, 50%);
 }
 
 /* --border-color: black; */
