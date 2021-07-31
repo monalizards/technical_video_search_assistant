@@ -6,7 +6,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 
-import { FastForward, GitHub, LinkedIn } from "@material-ui/icons";
+import { Brightness4, FastForward, GitHub, LinkedIn } from "@material-ui/icons";
 
 import "./Navbar.css";
 
@@ -16,7 +16,7 @@ const links = {
   linkedIn: "https://www.linkedin.com/in/mona-chung/",
 };
 
-export default function Navbar() {
+export default function Navbar({ toggleDarkmode }) {
   return (
     <nav>
       <AppBar position="static" className="margin-bottom-1">
@@ -27,6 +27,9 @@ export default function Navbar() {
           <Typography variant="h4" className="navHeader">
             Technical Video Search Assistant
           </Typography>
+          <IconButton onClick={toggleDarkmode}>
+            <Brightness4 />
+          </IconButton>
           <IconButton>
             <Link href={links.github} target="_blank" color="inherit">
               <GitHub fontSize="small" />
