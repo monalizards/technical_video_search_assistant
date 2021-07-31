@@ -43,7 +43,7 @@ export default function App() {
       h4: {
         fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
       },
-      fontFamily: ["Roboto Condensed", "sans-serif"].join(","),
+      fontFamily: ["Roboto", "sans-serif"].join(","),
     },
     overrides: {
       MuiFormHelperText: {

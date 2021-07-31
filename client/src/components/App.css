@@ -20,7 +20,7 @@
   --log-request-background: hsl(180, 60%, 80%);
   --log-response-background: var(--paper-highlight-color);
   --prefix-before-color: hsl(200, 100%, 50%);
-  --prefix-after-color: hsl(116, 100%, 50%);
+  --prefix-after-color: hsl(116, 80%, 40%);
 }
 
 /* --border-color: black; */
