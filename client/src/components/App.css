@@ -1,3 +1,13 @@
+/* set up variables */
+:root {
+  --border-color: black;
+  /* --border-color: rgba(250, 250, 250, 0.4); */
+  --border: 1px solid var(--border-color);
+  --table-hover-color: #616161;
+  --log-request-background: ;
+  --log-response-background: ;
+}
+
 .input-no-padding input {
   padding: 6px 1em;
 }

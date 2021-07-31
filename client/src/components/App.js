@@ -13,7 +13,7 @@ import VideoShow from "./VideoShow";
 
 const theme = createTheme({
   palette: {
-    type: "dark",
+    type: "light",
   },
   textField: {
     padding: "6px",

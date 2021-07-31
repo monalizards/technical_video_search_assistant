@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
+  border-bottom: var(--border);
 }
 .ReactVirtualized__Table__row {
   padding: 6px 20px;
@@ -19,7 +19,7 @@
 }
 .ReactVirtualized__Table__row:hover {
   cursor: pointer;
-  background-color: #616161;
+  background-color: var(--table-hover-color);
 }
 .ReactVirtualized__Table__rowColumn {
   text-overflow: ellipsis;
