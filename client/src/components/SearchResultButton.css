@@ -9,3 +9,11 @@
   cursor: pointer;
   background-color: rgba(155, 155, 155, 0.7);
 }
+
+.prefix-before {
+  color: var(--prefix-before-color);
+}
+
+.prefix-after {
+  color: var(--prefix-after-color);
+}

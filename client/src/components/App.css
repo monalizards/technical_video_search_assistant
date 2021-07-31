@@ -1,14 +1,29 @@
 /* set up variables */
 :root {
-  /* --border-color: black; */
-  --border-color: rgba(250, 250, 250, 0.4);
-  --paper-highlight-color: #616161;
   --border: 1px solid var(--border-color);
+}
+
+.dark {
+  --border: 1px solid rgba(255, 255, 255, 0.4);
+  --paper-highlight-color: #616161;
   --table-hover-color: var(--paper-highlight-color);
   --log-request-background: #3f51b5;
   --log-response-background: var(--paper-highlight-color);
+  --prefix-before-color: rgb(132, 164, 251);
+  --prefix-after-color: rgb(128, 197, 124);
 }
 
+.light {
+  --border: 1px solid rgba(0, 0, 0, 0.2);
+  --paper-highlight-color: #ddd;
+  --table-hover-color: var(--paper-highlight-color);
+  --log-request-background: #69a7f4;
+  --log-response-background: var(--paper-highlight-color);
+  --prefix-before-color: rgb(0, 68, 255);
+  --prefix-after-color: rgb(23, 166, 14);
+}
+
+/* --border-color: black; */
 .input-no-padding input {
   padding: 6px 1em;
 }

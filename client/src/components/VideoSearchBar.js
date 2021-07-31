@@ -78,7 +78,7 @@ const VideoSearchBar = () => {
           variant="filled"
           fullWidth
           size="small"
-          placeholder="Youtube Video URL"
+          placeholder="YouTube Video URL"
           value={searchUrl}
           onChange={(e) => setSearchUrl(e.target.value)}
           disabled={loading}

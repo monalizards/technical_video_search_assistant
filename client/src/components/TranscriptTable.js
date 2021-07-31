@@ -83,7 +83,7 @@ const TranscriptTable = forwardRef(({ playerRef }, ref) => {
                 rowStyle={({ index }) => {
                   if (index === selectedId) {
                     return {
-                      backgroundColor: "#757575",
+                      backgroundColor: "#aaa",
                     };
                   } else {
                     return {};

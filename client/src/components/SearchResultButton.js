@@ -3,11 +3,11 @@ import { useVideo } from "./VideoContext";
 
 const buttonSettings = {
   before: {
-    color: "rgb(132 164 251)",
+    prefixClass: "prefix-before",
     prefix: "<<",
   },
   after: {
-    color: "rgb(182 255 255)",
+    prefixClass: "prefix-after",
     prefix: ">>",
   },
 };
@@ -24,7 +24,7 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
 
   const time = findSectionTime(result.section);
 
-  const { color, prefix } =
+  const { prefixClass, prefix } =
     time < currentTime ? buttonSettings.before : buttonSettings.after;
 
   const onButtonClick = () => {
@@ -35,7 +35,7 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
     <div className="btn" onClick={() => onButtonClick(time)}>
       <div>
         {/* << if current time is after the time of the match */}
-        <small style={{ color: color }}>
+        <small className={prefixClass}>
           {prefix} {time}
         </small>
       </div>

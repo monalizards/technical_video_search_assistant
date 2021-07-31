@@ -60,7 +60,7 @@ export default function App() {
   });
 
   return (
-    <div className="body">
+    <div className={`body ${darkmode ? "dark" : "light"}`}>
       {/* set up Material-UI Themes & css */}
       <ThemeProvider theme={theme}>
         <CssBaseline />
