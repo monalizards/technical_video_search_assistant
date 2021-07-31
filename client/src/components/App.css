@@ -17,7 +17,7 @@
   --border: 1px solid rgba(0, 0, 0, 0.2);
   --paper-highlight-color: #ddd;
   --table-hover-color: var(--paper-highlight-color);
-  --log-request-background: #69a7f4;
+  --log-request-background: rgb(162 216 255);
   --log-response-background: var(--paper-highlight-color);
   --prefix-before-color: rgb(0, 68, 255);
   --prefix-after-color: rgb(23, 166, 14);
