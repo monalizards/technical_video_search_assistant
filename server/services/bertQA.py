@@ -1,8 +1,8 @@
+# load BERT model
 from transformers import BertTokenizer, BertForQuestionAnswering
 from transformers import LongformerTokenizer, LongformerForQuestionAnswering
 import torch
-
-# load BERT model
+import json
 
 
 def qa_short(question, text):
@@ -55,11 +55,19 @@ def qa_long(question, text):
     answer = answer.replace('Ġ', '')
     return answer
 
+# helper function to compile caption text
+def caption_sections_to_text(sections):
+    sections = json.loads(sections)
+    text = " ".join([section['subtitle'] for section in sections])
+    return text
 
-def qa(question, text):
+
+def qa(question, captions):
     """
-    return an answer to a question using text as a reference
+    return an answer to a question with a JSON with list of caption sections
     """
+    text = caption_sections_to_text(captions)
+    
     tokenizer = BertTokenizer.from_pretrained(
         'deepset/bert-large-uncased-whole-word-masking-squad2')
 

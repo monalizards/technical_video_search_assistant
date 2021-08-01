@@ -67,7 +67,7 @@ def fetch_caption(caption_url):
     """
     caption = get_caption_json(caption_url)
     caption = format_caption(caption)
-    return {'status': 200, 'caption': caption}
+    return caption
 
 
 def generate_caption(url):
@@ -87,7 +87,7 @@ def generate_caption(url):
         stt_results = stt(audio_file, sttmodel)
         caption = format_watson_caption(stt_results)
         delete_file(audio_file)
-        return {'status': 200, 'caption': caption}
+        return caption
     except Exception as e:
         delete_file(audio_file)
         return None
@@ -112,18 +112,19 @@ def pipeline_youtubedl(url):
     if caption_url != None:
         # fetch caption from youtube if available
         try:
-            return fetch_caption(caption_url)
+            caption = fetch_caption(caption_url)
+            return {'status': 200, 'caption': caption.list_sections()}
         except Exception as e:
-            print(e)
+            # print(e)
             print("Attemping to generate transcript from Watson")
 
-    else:
-        # generate caption from watson if needed
-        try:
-            return generate_caption(url)
-        except Exception as e:
-            print(e)
-            return {'status': 400, 'message': 'Failed to fetch and generate transcript'}
+    # generate caption from watson if needed
+    try:
+        caption = generate_caption(url)
+        return {'status': 200, 'caption': caption.list_sections()}
+    except Exception as e:
+        print(e)
+        return {'status': 400, 'message': 'Failed to fetch and generate transcript'}
 
 
 if __name__ == "__main__":

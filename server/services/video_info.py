@@ -3,8 +3,6 @@ Get key info from video url
 """
 
 from services.youtube_dl_helpers import get_video_base, get_info_file_name, load_info_file, get_key_info, delete_info_file
-# from services.youtube_dl_helpers import get_video_base, get_info_file_name, load_info_file
-
 
 def get_video_info(url):
     try:
@@ -18,6 +16,7 @@ def get_video_info(url):
             return {'status': 200, 'videoInfo': info}
 
     except Exception as e:
+        print(e)
         return {'status': 400, 'message': e}
 
 

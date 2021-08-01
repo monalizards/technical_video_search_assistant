@@ -13,23 +13,55 @@ const override = css`
 `;
 
 const VideoSearchBar = () => {
-  // initiate URL state
-  const [searchUrl, setSearchUrl] = useState("");
-  // Load spinner
+  //   initiate URL state
+  const [url, setUrl] = useState("");
+  //   Load spinner
   const [loading, setLoading] = useState(false);
   // show error
   const [error, setError] = useState("");
-  // use video and history context
-  const { url, setUrl, setVideo, setPlayedSeconds, setCaptions } = useVideo();
+  // use video context
+  const { setVideo } = useVideo();
   const { clearHistory } = useHistory();
 
+  // //   fetch video and caption from server
+  // const onURLSubmit = (e) => {
+  //   // clear screen
+  //   setError("");
+  //   setLoading(true);
+  //   clearHistory();
+  //   setVideo(null);
+  //   e.preventDefault();
+  //   if (url) {
+  //     server
+  //       .post("", {
+  //         url,
+  //       })
+  //       .then((res) => {
+  //         const { results } = res.data;
+  //         if (results.status === 200) {
+  //           setVideo({ ...results, playedSeconds: 0 });
+  //         } else if (results.status === 400) {
+  //           setError(results.message);
+  //           setVideo(null);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         setError(err.message);
+  //       })
+  //       .finally(() => {
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
+
   const clear_screen = () => {
-    // clean up previous states
+    // clear screen
     setError("");
+    setLoading(true);
     clearHistory();
     setVideo(null);
-    setPlayedSeconds(0);
-    setCaptions([]);
   };
 
   const get_vid_info = (url) => {
@@ -38,17 +70,13 @@ const VideoSearchBar = () => {
       .then(({ data }) => {
         const { results } = data;
         if (results.status === 400) {
-          setError(
-            "Video unavailable, please make sure you've entered the complete URL to a YouTube video."
-          );
+          setError(results.message);
         } else {
-          setVideo({ url, ...results.videoInfo });
+          setVideo({ url, ...results.videoInfo, playedSeconds: 0 });
         }
       })
       .catch((err) => {
-        setError(
-          "Please make sure you've entered a URL. Server may be currently unavilable"
-        );
+        setError(err.message);
         setVideo(null);
       })
       .finally(() => setLoading(false));
@@ -56,13 +84,10 @@ const VideoSearchBar = () => {
 
   // fetch video info from server
   const onURLSubmit = (e) => {
-    setLoading(true);
+    clear_screen();
     e.preventDefault();
-    // search only if searchUrl is different from url of video in previous state
-    if (searchUrl !== url) {
-      clear_screen();
-      setUrl(searchUrl);
-      get_vid_info(searchUrl);
+    if (url) {
+      get_vid_info(url);
     } else {
       setLoading(false);
     }
@@ -78,9 +103,9 @@ const VideoSearchBar = () => {
           variant="filled"
           fullWidth
           size="small"
-          placeholder="YouTube Video URL"
-          value={searchUrl}
-          onChange={(e) => setSearchUrl(e.target.value)}
+          placeholder="Youtube Video URL"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
           disabled={loading}
           className="input-no-padding"
         />

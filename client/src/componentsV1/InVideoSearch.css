@@ -10,10 +10,9 @@
 
 .card-header {
   height: 40px;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
-  border-bottom: var(--border);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.7);
 }
 
 .card-header > h6 {
@@ -24,7 +23,7 @@
 }
 
 .card-content {
-  border-bottom: var(--border);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.4);
   width: inherit;
   overflow-y: scroll;
   flex-grow: 1;
@@ -32,8 +31,4 @@
 
 .card-actions {
   padding: 0 20px 12px 20px;
-}
-
-.progress {
-  margin: 0.4em;
 }

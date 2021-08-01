@@ -33,15 +33,15 @@ const formatTableTime = (time) => {
 };
 
 const TranscriptTable = forwardRef(({ playerRef }, ref) => {
-  const { captions } = useVideo();
+  const { video } = useVideo();
   // format sections with useful information to display
-  let sections = [...captions];
+  let sections = JSON.parse(video.caption_sections);
   sections = sections.map((section) => {
     return {
       section: parseInt(section.section),
-      subtitle: section.subtitle,
-      timeString: formatTableTime(section.time),
+      ...section,
       ...formatTime(section.time),
+      timeString: formatTableTime(section.time),
     };
   });
 
@@ -83,7 +83,7 @@ const TranscriptTable = forwardRef(({ playerRef }, ref) => {
                 rowStyle={({ index }) => {
                   if (index === selectedId) {
                     return {
-                      backgroundColor: "#aaa",
+                      backgroundColor: "#757575",
                     };
                   } else {
                     return {};

@@ -1,6 +1,4 @@
 import os
-# from services.youtube_dl_helpers import format_caption
-# from services.caption_classes import YoutubeApiCaption
 from youtube_dl_helpers import get_video_base, get_info_file_name, load_info_file, get_key_info, find_caption_url, get_caption_json, delete_info_file, format_caption, get_video_file_name
 from caption_classes import YoutubeApiCaption
 

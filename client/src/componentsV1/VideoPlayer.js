@@ -12,7 +12,7 @@ import ReactPlayer from "react-player/youtube";
 const VideoPlayer = forwardRef(({ tableRef }, ref) => {
   const playerRef = useRef();
   const [playing, setPlaying] = useState(false);
-  const { video, setPlayedSeconds } = useVideo();
+  const { video, updatePlayedSeconds } = useVideo();
 
   const videoPlay = () => {
     setPlaying(true);
@@ -24,7 +24,7 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
 
   const videoPlaySeconds = (seconds) => {
     videoStop();
-    playerRef.current.player.seekTo(seconds, "seconds");
+    tableRef.current.scrollToSeconds(seconds);
 
     // Solve seekto when video isn't loaded
     if (playerRef.current.getSecondsLoaded() === 0) {
@@ -33,10 +33,9 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
         500
       );
     }
+
+    playerRef.current.player.seekTo(seconds, "seconds");
     videoPlay();
-    if (tableRef.current) {
-      tableRef.current.scrollToSeconds(seconds);
-    }
   };
 
   const getCurrentTime = () => {
@@ -46,15 +45,15 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
 
   useImperativeHandle(ref, () => ({ videoPlaySeconds, getCurrentTime }));
 
-  const scrollToSeconds = (seconds) => {
-    if (tableRef.current) {
-      tableRef.current.scrollToSeconds(seconds);
-    }
+  //   Prevent autoplay when video source changes
+  const onVideoLoad = () => {
+    tableRef.current.scrollToSeconds(0);
   };
 
   useEffect(() => {
     videoStop();
-  }, [video]);
+  }, [video.id]);
+  // }, [video.videoId]);
 
   return (
     <div
@@ -77,15 +76,19 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
             className="react-player"
             controls={true}
             onReady={() => {
-              scrollToSeconds(0);
+              if (tableRef.current) {
+                onVideoLoad();
+              }
             }}
             onPlay={videoPlay}
             onPause={videoStop}
             onEnded={videoStop}
             onError={videoStop}
             onProgress={({ playedSeconds }) => {
-              setPlayedSeconds(playedSeconds);
-              scrollToSeconds(playedSeconds);
+              updatePlayedSeconds(playedSeconds);
+              if (tableRef.current) {
+                tableRef.current.scrollToSeconds(playedSeconds);
+              }
             }}
             width="100%"
             height="100%"
@@ -94,6 +97,7 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
               maxHeight: 360,
             }}
             url={`https://www.youtube.com/watch?v=${video.id}`}
+            // url={`https://www.youtube.com/watch?v=${video.videoId}`}
             playing={playing}
           />
         </div>

@@ -147,9 +147,10 @@ class YoutubeApiCaption:
                 "section": str(index),
                 "start": section['start'],
                 "time": self.format_time(section['start'], section['duration']),
-                "subtitle": section['text']
+                "subtitle": self.format_subs(section['text'])
             })
         return sections
+
 
     def compile_sections(self):
         text = " ".join([section["subtitle"] for section in self.sectionlist])
@@ -160,6 +161,13 @@ class YoutubeApiCaption:
 
     def full_text(self):
         return self.text
+
+    @classmethod
+    def format_subs(cls, text):
+        """    
+        replace &#39; with '
+        """
+        return text.replace("&#39;", "'")
 
     @classmethod
     def format_time(cls, start, duration):

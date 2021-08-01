@@ -4,9 +4,9 @@ import { useRef } from "react";
 import { useVideo } from "./VideoContext";
 
 import { Typography } from "@material-ui/core";
-import TranscriptTable from "./TranscriptTable";
+
 import VideoPlayer from "./VideoPlayer";
-import InVideoSearch from "./InVideoSearch";
+import Caption from "./Caption";
 
 const VideoShow = () => {
   const { video } = useVideo();
@@ -14,19 +14,12 @@ const VideoShow = () => {
   const playerRef = useRef();
   const tableRef = useRef();
 
-  if (video && video.status === 200) {
+  if (video) {
     return (
       <div>
-        <Typography variant="h5">{video.videoTitle}</Typography>
+        <Typography variant="h5">{video.title}</Typography>
         <VideoPlayer ref={playerRef} tableRef={tableRef} />
-        <div className="flex-container">
-          <div className="table">
-            <TranscriptTable ref={tableRef} playerRef={playerRef} />
-          </div>
-          <div className="history">
-            <InVideoSearch playerRef={playerRef} />
-          </div>
-        </div>
+        <Caption tableRef={tableRef} playerRef={playerRef} />
       </div>
     );
   }
@@ -38,16 +31,14 @@ const VideoShow = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: "4em",
+        // gap: "4em",
       }}
     >
-      <Typography variant="body1">
-        Nothing here yet, please check if you have entered a valid URL.
-      </Typography>
-      <Typography variant="body2">
+      <Typography variant="body1">Nothing here yet.</Typography>
+      {/* <Typography variant="body2">
         Note: If HTTP Error persists, the APIs might be unavailable / rate
         limited.
-      </Typography>
+      </Typography> */}
     </div>
   );
 };
