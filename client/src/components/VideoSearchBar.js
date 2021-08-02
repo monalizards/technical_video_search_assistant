@@ -37,6 +37,7 @@ const VideoSearchBar = () => {
       .post("vidinfo", { url })
       .then(({ data }) => {
         const { results } = data;
+        // console.log(results)
         if (results.status === 400) {
           setError(
             "Video unavailable, please make sure you've entered the complete URL to a YouTube video."

@@ -33,6 +33,7 @@ const Caption = ({ tableRef, playerRef }) => {
           .post("youtubedl", { url })
           .then((res) => {
             const results = res.data.results;
+            // console.log(results)
             if (results.status === 200) {
               setCaptions(results.caption);
             } else {

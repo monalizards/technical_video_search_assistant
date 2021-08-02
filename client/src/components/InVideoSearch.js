@@ -122,6 +122,7 @@ const InVideoSearch = ({ playerRef }) => {
     server
       .post(`/${request.type}`, params)
       .then(({ data }) => {
+        // console.log(request, data);
         addHistory({ request, response: data });
         setError("");
       })

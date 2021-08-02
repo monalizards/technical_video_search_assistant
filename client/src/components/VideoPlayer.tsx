@@ -5,12 +5,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useVideo } from "./VideoContext";
-
 import ReactPlayer from "react-player/youtube";
 
-const VideoPlayer = forwardRef(({ tableRef }, ref) => {
-  const playerRef = useRef();
+import { useVideo } from "./VideoContext";
+
+// TODO: fix player type and table ref types of any
+
+const VideoPlayer = forwardRef(({ tableRef }: { tableRef: any }, ref) => {
+  const playerRef = useRef<any>(null);
   const [playing, setPlaying] = useState(false);
   const { video, setPlayedSeconds } = useVideo();
 
@@ -22,14 +24,14 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
     setPlaying(false);
   };
 
-  const videoPlaySeconds = (seconds) => {
+  const videoPlaySeconds = (seconds: number) => {
     videoStop();
-    playerRef.current.player.seekTo(seconds, "seconds");
+    playerRef?.current?.player.seekTo(seconds, "seconds");
 
     // Solve seekto when video isn't loaded
-    if (playerRef.current.getSecondsLoaded() === 0) {
+    if (playerRef?.current?.getSecondsLoaded() === 0) {
       setTimeout(
-        () => playerRef.current.player.seekTo(seconds, "seconds"),
+        () => playerRef?.current?.player.seekTo(seconds, "seconds"),
         500
       );
     }
@@ -40,13 +42,13 @@ const VideoPlayer = forwardRef(({ tableRef }, ref) => {
   };
 
   const getCurrentTime = () => {
-    const timestamp = playerRef.current.getCurrentTime();
+    const timestamp = playerRef?.current?.getCurrentTime();
     return timestamp;
   };
 
   useImperativeHandle(ref, () => ({ videoPlaySeconds, getCurrentTime }));
 
-  const scrollToSeconds = (seconds) => {
+  const scrollToSeconds = (seconds: number) => {
     if (tableRef.current) {
       tableRef.current.scrollToSeconds(seconds);
     }
