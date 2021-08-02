@@ -11,11 +11,11 @@ import VideoSearchBar from "./VideoSearchBar";
 import VideoShow from "./VideoShow";
 
 export default function App() {
-  const [darkmode, setDarkmode] = useState(true);
+  const [darkmode, setDarkmode] = useState(false);
 
   useEffect(() => {
-    if (JSON.parse(window.localStorage.getItem("darkmode")) === false) {
-      setDarkmode(false);
+    if (JSON.parse(window.localStorage.getItem("darkmode")) === true) {
+      setDarkmode(true);
     }
   }, []);
 

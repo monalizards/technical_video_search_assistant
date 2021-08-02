@@ -71,10 +71,12 @@
 - Search for answers
 - Handle errors
 
-## Plans for v2:
+## V2 (Completed on 2 August 2021):
 
-- Get basic video information and player before transcription
+- Switch to youtube-dl for getting video information and parse captions on site
+- Decouple initial video search request: get basic video information and player before transcription/captions
   - especially useful if no caption is directly available from youtube
 - Show load progress for requests
-- Use a library for keyword search to improve performance
-- Add ability to highlight matches in the transcription table
+- Show keyword/phrase matches in context with some text before and after each match
+- Change body font family for better clarity
+- Add options for light/dark mode
