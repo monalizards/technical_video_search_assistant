@@ -25,11 +25,11 @@ const tooltips = {
   linkedIn: "Visit my profile on LinkedIn",
 };
 
-interface Props {
+export default function Navbar({
+  toggleDarkmode,
+}: {
   toggleDarkmode: () => void;
-}
-
-const Navbar: React.FC<Props> = ({ toggleDarkmode }) => {
+}) {
   return (
     <nav>
       <AppBar position="static" className="margin-bottom-1">
@@ -63,6 +63,4 @@ const Navbar: React.FC<Props> = ({ toggleDarkmode }) => {
       </AppBar>
     </nav>
   );
-};
-
-export default Navbar;
+}
