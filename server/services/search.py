@@ -108,7 +108,7 @@ def word_matching(word, text):
     synonyms = get_synonyms('good')
     # load spacy
     nlp = English()
-    nlp = spacy.load('en_core_web_lg')
+    nlp = spacy.load('en_core_web_md')
     # loop through tokens
     for token in tokens:
         # calculate similarity score

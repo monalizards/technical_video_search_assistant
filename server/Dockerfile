@@ -3,13 +3,14 @@ FROM python:3
 WORKDIR /app
 
 COPY ./requirements.txt .
-COPY ./bert_model_setup.py .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN python -m nltk.downloader -q all
-RUN python -m spacy download en_core_web_lg
-RUN python bert_model_setup.py
+
+# COPY ./bert_model_setup.py .
+# RUN python -m nltk.downloader -q all
+# RUN python -m spacy download en_core_web_md
+# RUN python bert_model_setup.py
 
 COPY . .
 
