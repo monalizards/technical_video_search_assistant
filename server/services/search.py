@@ -152,11 +152,19 @@ def match_phase(wordtokens, text):
 
 def format_match(match, text, sections):
     match_type = match.get('type', 'exact')
-    matches = re.finditer(match['match'], text)
-    matches = [{'start': m.start(), 'end': m.end(), 'match': m.group(
-        0), 'type': match_type} for m in matches]
+    """V2: match with words before and after"""
+    matches = re.finditer(fr'((\S*?\s){{0,5}})({match["match"]})((\S*?\s?\S*){{0,5}})', text)
+    matches = [{'start': m.start(), 'end': m.end(), 'match': m.group(3),
+                'text_before': m.group(1), 'text_after': m.group(4),
+                'type': match_type} for m in matches]
     for match in matches:
         match["section"] = find_section(match["start"], sections)
+    # """V1: """
+    # matches = re.finditer(match['match'], text)
+    # matches = [{'start': m.start(), 'end': m.end(), 'match': m.group(
+    #     0), 'type': match_type} for m in matches]
+    # for match in matches:
+    #     match["section"] = find_section(match["start"], sections)
     return matches
 
 # helper function to compile caption text
