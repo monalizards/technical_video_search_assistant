@@ -1,8 +1,4 @@
 /* set up variables */
-:root {
-  --border: 1px solid var(--border-color);
-}
-
 .dark {
   --border: 1px solid hsla(0, 0%, 100%, 0.4);
   --paper-highlight-color: hsl(0, 0%, 40%);
@@ -15,9 +11,9 @@
 
 .light {
   --border: 1px solid hsla(0, 0%, 0%, 0.2);
-  --paper-highlight-color: hsl(0, 0%, 90%);
+  --paper-highlight-color: hsl(0, 0%, 94%);
   --table-hover-color: var(--paper-highlight-color);
-  --log-request-background: hsl(180, 60%, 80%);
+  --log-request-background: hsl(230, 48%, 78%);
   --log-response-background: var(--paper-highlight-color);
   --prefix-before-color: hsl(200, 100%, 50%);
   --prefix-after-color: hsl(116, 80%, 40%);

@@ -163,6 +163,7 @@ const InVideoSearch = ({ playerRef }) => {
                   <Grid item>
                     <Switch
                       disabled={loading}
+                      color="primary"
                       checked={request.type === searchTypes.qa}
                       onChange={onSwitchChange}
                       name="type"

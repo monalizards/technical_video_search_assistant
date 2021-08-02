@@ -40,9 +40,9 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
         </small>
       </div>
       <div>
-        {/* TODO: match prefix */}
+        <span className="text-small">{result.text_before}</span>
         <strong>{result.match}</strong>
-        {/* TODO: match suffix */}
+        <span className="text-small">{result.text_after}</span>
       </div>
     </div>
   );

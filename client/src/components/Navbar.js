@@ -4,6 +4,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Tooltip,
 } from "@material-ui/core";
 
 import { Brightness4, FastForward, GitHub, LinkedIn } from "@material-ui/icons";
@@ -14,6 +15,12 @@ import "./Navbar.css";
 const links = {
   github: "https://github.com/monalizards/technical_video_search_assistant",
   linkedIn: "https://www.linkedin.com/in/mona-chung/",
+};
+
+const tooltips = {
+  theme: "Toggle light/dark mode",
+  github: "Visit project repo on Github",
+  linkedIn: "Visit my profile on LinkedIn",
 };
 
 export default function Navbar({ toggleDarkmode }) {
@@ -27,19 +34,25 @@ export default function Navbar({ toggleDarkmode }) {
           <Typography variant="h4" className="navHeader">
             Technical Video Search Assistant
           </Typography>
-          <IconButton onClick={toggleDarkmode}>
-            <Brightness4 />
-          </IconButton>
-          <IconButton>
-            <Link href={links.github} target="_blank" color="inherit">
-              <GitHub fontSize="small" />
-            </Link>
-          </IconButton>
-          <IconButton>
-            <Link href={links.linkedIn} target="_blank" color="inherit">
-              <LinkedIn fontSize="small" />
-            </Link>
-          </IconButton>
+          <Tooltip title={tooltips.theme}>
+            <IconButton onClick={toggleDarkmode} aria-label={tooltips.theme}>
+              <Brightness4 />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={tooltips.github}>
+            <IconButton aria-label={tooltips.github}>
+              <Link href={links.github} target="_blank" color="inherit">
+                <GitHub fontSize="small" />
+              </Link>
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={tooltips.linkedIn}>
+            <IconButton aria-label={tooltips.linkedIn}>
+              <Link href={links.linkedIn} target="_blank" color="inherit">
+                <LinkedIn fontSize="small" />
+              </Link>
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     </nav>
