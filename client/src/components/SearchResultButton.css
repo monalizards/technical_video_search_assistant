@@ -1,5 +1,6 @@
 .btn {
   margin: 4px;
+  width: 100%;
   border: var(--border);
   border-radius: 2px;
   padding: 4px 8px;
@@ -16,4 +17,8 @@
 
 .prefix-after {
   color: var(--prefix-after-color);
+}
+
+.text-small {
+  font-size: 0.8rem;
 }
