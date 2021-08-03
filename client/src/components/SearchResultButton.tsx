@@ -1,3 +1,4 @@
+import React from "react";
 import "./SearchResultButton.css";
 import { useVideo } from "./VideoContext";
 
@@ -12,10 +13,27 @@ const buttonSettings = {
   },
 };
 
-export const SearchResultButton = ({ currentTime, result, playerRef }) => {
+interface Result {
+  section: number;
+  text_before: string;
+  text_after: string;
+  match: string;
+}
+
+interface Props {
+  currentTime: number;
+  result: Result;
+  playerRef: any;
+}
+
+export const SearchResultButton: React.FC<Props> = ({
+  currentTime,
+  result,
+  playerRef,
+}) => {
   const { captions } = useVideo();
 
-  const findSectionTime = (section) => {
+  const findSectionTime = (section: number) => {
     //   offset for sections starting at index 1
     const captionSection = captions[section - 1];
     const startTime = parseFloat(captionSection.time.split(":")[0]);
@@ -27,7 +45,7 @@ export const SearchResultButton = ({ currentTime, result, playerRef }) => {
   const { prefixClass, prefix } =
     time < currentTime ? buttonSettings.before : buttonSettings.after;
 
-  const onButtonClick = () => {
+  const onButtonClick = (time: number) => {
     playerRef.current.videoPlaySeconds(time);
   };
 

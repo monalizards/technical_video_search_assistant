@@ -11,17 +11,17 @@ import VideoSearchBar from "./VideoSearchBar";
 import VideoShow from "./VideoShow";
 
 export default function App() {
-  const [darkmode, setDarkmode] = useState(true);
+  const [darkmode, setDarkmode] = useState<boolean>(false);
 
   useEffect(() => {
-    if (JSON.parse(window.localStorage.getItem("darkmode")) === false) {
-      setDarkmode(false);
+    if (JSON.parse(window.localStorage.getItem("darkmode") || "") === true) {
+      setDarkmode(true);
     }
   }, []);
 
   const toggleDarkmode = () => {
     setDarkmode((darkmode) => {
-      window.localStorage.setItem("darkmode", !darkmode);
+      window.localStorage.setItem("darkmode", !darkmode as unknown as string);
       return !darkmode;
     });
   };
@@ -31,14 +31,11 @@ export default function App() {
     palette: {
       type: darkmode ? "dark" : "light",
     },
-    textField: {
-      padding: "6px",
-    },
     typography: {
       h5: {
         textAlign: "center",
         fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
-        fontWeight: "700",
+        fontWeight: "bold",
       },
       h4: {
         fontFamily: ["Open Sans Condensed", "sans-serif"].join(","),
