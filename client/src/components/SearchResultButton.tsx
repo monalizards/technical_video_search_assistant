@@ -32,7 +32,6 @@ export const SearchResultButton: React.FC<Props> = ({
   playerRef,
 }) => {
   const { captions } = useVideo();
-  console.log(result);
 
   const findSectionTime = (section: number) => {
     //   offset for sections starting at index 1
