@@ -126,7 +126,16 @@ const InVideoSearch = ({ playerRef }) => {
         addHistory({ request, response: data });
         setError("");
       })
-      .catch((e) => setError(e.message))
+      .catch((e) => {
+        // ask user to try using search if video is too long for using qa models
+        if ((request.type === searchTypes.qa) & (video.duration > 600)) {
+          setError(
+            "Video length exceeds the limit for this function, please try 'Search' instead."
+          );
+        } else {
+          setError(e.message);
+        }
+      })
       .finally(() => {
         setLoading(false);
         clearInterval(timerId);
@@ -160,7 +169,7 @@ const InVideoSearch = ({ playerRef }) => {
                   alignItems="center"
                   spacing={1}
                 >
-                  <Grid item>Keyword/Phase</Grid>
+                  <Grid item>Search</Grid>
                   <Grid item>
                     <Switch
                       disabled={loading}

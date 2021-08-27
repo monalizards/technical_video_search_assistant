@@ -14,7 +14,10 @@ export default function App() {
   const [darkmode, setDarkmode] = useState<boolean>(false);
 
   useEffect(() => {
-    if (JSON.parse(window.localStorage.getItem("darkmode") || "") === true) {
+    if (
+      !window.localStorage.getItem("darkmode") ||
+      JSON.parse(window.localStorage.getItem("darkmode") || "") === true
+    ) {
       setDarkmode(true);
     }
   }, []);
