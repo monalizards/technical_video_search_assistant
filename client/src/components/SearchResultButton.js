@@ -13,27 +13,10 @@ const buttonSettings = {
   },
 };
 
-interface Result {
-  section: number;
-  text_before: string;
-  text_after: string;
-  match: string;
-}
-
-interface Props {
-  currentTime: number;
-  result: Result;
-  playerRef: any;
-}
-
-export const SearchResultButton: React.FC<Props> = ({
-  currentTime,
-  result,
-  playerRef,
-}) => {
+export const SearchResultButton = ({ currentTime, result, playerRef }) => {
   const { captions } = useVideo();
 
-  const findSectionTime = (section: number) => {
+  const findSectionTime = (section) => {
     //   offset for sections starting at index 1
     const captionSection = captions[section - 1];
     const startTime = parseFloat(captionSection.time.split(":")[0]);
@@ -45,7 +28,7 @@ export const SearchResultButton: React.FC<Props> = ({
   const { prefixClass, prefix } =
     time < currentTime ? buttonSettings.before : buttonSettings.after;
 
-  const onButtonClick = (time: number) => {
+  const onButtonClick = (time) => {
     playerRef.current.videoPlaySeconds(time);
   };
 

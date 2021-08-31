@@ -11,7 +11,7 @@ import VideoSearchBar from "./VideoSearchBar";
 import VideoShow from "./VideoShow";
 
 export default function App() {
-  const [darkmode, setDarkmode] = useState<boolean>(false);
+  const [darkmode, setDarkmode] = useState(false);
 
   useEffect(() => {
     if (
@@ -24,7 +24,7 @@ export default function App() {
 
   const toggleDarkmode = () => {
     setDarkmode((darkmode) => {
-      window.localStorage.setItem("darkmode", !darkmode as unknown as string);
+      window.localStorage.setItem("darkmode", !darkmode);
       return !darkmode;
     });
   };

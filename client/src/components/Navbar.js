@@ -7,8 +7,6 @@ import {
   Tooltip,
 } from "@material-ui/core";
 
-import React from "react";
-
 import { Brightness4, FastForward, GitHub, LinkedIn } from "@material-ui/icons";
 
 import "./Navbar.css";
@@ -25,11 +23,7 @@ const tooltips = {
   linkedIn: "Visit my profile on LinkedIn",
 };
 
-export default function Navbar({
-  toggleDarkmode,
-}: {
-  toggleDarkmode: () => void;
-}) {
+const Navbar = ({ toggleDarkmode }) => {
   return (
     <nav>
       <AppBar position="static" className="margin-bottom-1">
@@ -63,4 +57,6 @@ export default function Navbar({
       </AppBar>
     </nav>
   );
-}
+};
+
+export default Navbar;

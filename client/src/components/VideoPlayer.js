@@ -9,10 +9,8 @@ import ReactPlayer from "react-player/youtube";
 
 import { useVideo } from "./VideoContext";
 
-// TODO: fix player type and table ref types of any
-
-const VideoPlayer = forwardRef(({ tableRef }: { tableRef: any }, ref) => {
-  const playerRef = useRef<any>(null);
+const VideoPlayer = forwardRef(({ tableRef }, ref) => {
+  const playerRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const { video, setPlayedSeconds } = useVideo();
 
@@ -24,7 +22,7 @@ const VideoPlayer = forwardRef(({ tableRef }: { tableRef: any }, ref) => {
     setPlaying(false);
   };
 
-  const videoPlaySeconds = (seconds: number) => {
+  const videoPlaySeconds = (seconds) => {
     videoStop();
     playerRef?.current?.player.seekTo(seconds, "seconds");
 
@@ -48,7 +46,7 @@ const VideoPlayer = forwardRef(({ tableRef }: { tableRef: any }, ref) => {
 
   useImperativeHandle(ref, () => ({ videoPlaySeconds, getCurrentTime }));
 
-  const scrollToSeconds = (seconds: number) => {
+  const scrollToSeconds = (seconds) => {
     if (tableRef.current) {
       tableRef.current.scrollToSeconds(seconds);
     }
