@@ -105,7 +105,7 @@ def word_matching(word, text):
     # set up lemmatizer
     wnl = WordNetLemmatizer()
     # get synonyms
-    synonyms = get_synonyms('good')
+    synonyms = get_synonyms(word)
     # load spacy
     nlp = English()
     nlp = spacy.load('en_core_web_md')
@@ -119,7 +119,7 @@ def word_matching(word, text):
         if token == word:
             matches.append({'match': token, 'type': 'exact'})
         # match synonyms
-        elif wnl.lemmatize(token) in get_synonyms(word):
+        elif wnl.lemmatize(token) in synonyms:
             matches.append({'match': token, 'type': 'synonym'})
         # match high similarity words
         elif similarity > 0.8:
