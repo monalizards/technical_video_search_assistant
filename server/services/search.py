@@ -138,12 +138,12 @@ def match_word(word, text):
     results = {'correction': None if correction == word else correction, 'matches': word_matching(correction, text)}
     return results
 
-# return (unique) phases marches in text
+# return (unique) phrases marches in text
 
 
-def match_phase(wordtokens, text):
-    phase = r'.{0,3}'.join(wordtokens)
-    matches = re.findall(phase, text)
+def match_phrase(wordtokens, text):
+    phrase = r'.{0,3}'.join(wordtokens)
+    matches = re.findall(phrase, text)
     matches = set([match for match in matches])
     matches = [{'match': match} for match in matches]
     results = {'matches': matches}
@@ -190,9 +190,9 @@ def search_caption(query, captions):
     # Single word search
     if len(query_tokens) == 1:
         matches = match_word(query_tokens[0], text)
-    # Phase search
+    # Phrase search
     else:
-        matches = match_phase(query_tokens, text)
+        matches = match_phrase(query_tokens, text)
 
     results = []
     for match in matches["matches"]:
