@@ -196,7 +196,6 @@ def search_caption(query, captions):
 
     results = []
     for match in matches["matches"]:
-        # TODO: find prefix and suffix for match
         results.extend(format_match(match, text, captions))
 
     results = sort_results_by_section(results)
